@@ -4,7 +4,11 @@
 
 # Authentication
 
-# Authentication
+# Authentication (Model Providers)
+
+<Note>
+  This page covers **model provider** authentication (API keys, OAuth, Claude CLI reuse). For **gateway connection** authentication (token, password, trusted-proxy), see [Configuration](/gateway/configuration) and [Trusted Proxy Auth](/gateway/trusted-proxy-auth).
+</Note>
 
 OpenClaw supports OAuth and API keys for model providers. For always-on gateway
 hosts, API keys are usually the most predictable option. Subscription/OAuth
@@ -20,8 +24,8 @@ For credential eligibility/reason-code rules used by `models status --probe`, se
 
 If you’re running a long-lived gateway, start with an API key for your chosen
 provider.
-For Anthropic specifically, API key auth is the safe path and is recommended
-over subscription setup-token auth.
+For Anthropic specifically, API key auth is the safe path. Claude CLI reuse is
+the other supported subscription-style setup path.
 
 1. Create an API key in your provider console.
 2. Put it on the **gateway host** (the machine running `openclaw gateway`).
@@ -53,45 +57,21 @@ API keys for daemon use: `openclaw onboard`.
 See [Help](/help) for details on env inheritance (`env.shellEnv`,
 `~/.openclaw/.env`, systemd/launchd).
 
-## Anthropic: setup-token (subscription auth)
+## Anthropic: legacy token compatibility
 
-If you’re using a Claude subscription, the setup-token flow is supported. Run
-it on the **gateway host**:
+Anthropic setup-token auth is still available in OpenClaw as a
+legacy/manual path. Anthropic's public Claude Code docs still cover direct
+Claude Code terminal use under Claude plans, but Anthropic separately told
+OpenClaw users that the **OpenClaw** Claude-login path counts as third-party
+harness usage and requires **Extra Usage** billed separately from the
+subscription.
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
-claude setup-token
-```
-
-Then paste it into OpenClaw:
-
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
-openclaw models auth setup-token --provider anthropic
-```
-
-If the token was created on another machine, paste it manually:
-
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
-openclaw models auth paste-token --provider anthropic
-```
-
-If you see an Anthropic error like:
-
-```
-This credential is only authorized for use with Claude Code and cannot be used for other API requests.
-```
-
-…use an Anthropic API key instead.
-
-<Warning>
-  Anthropic setup-token support is technical compatibility only. Anthropic has blocked
-  some subscription usage outside Claude Code in the past. Use it only if you decide
-  the policy risk is acceptable, and verify Anthropic's current terms yourself.
-</Warning>
+For the clearest setup path, use an Anthropic API key or migrate to Claude CLI
+on the gateway host.
 
 Manual token entry (any provider; writes `auth-profiles.json` + updates config):
 
 ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
-openclaw models auth paste-token --provider anthropic
 openclaw models auth paste-token --provider openrouter
 ```
 
@@ -99,6 +79,7 @@ Auth profile refs are also supported for static credentials:
 
 * `api_key` credentials can use `keyRef: { source, provider, id }`
 * `token` credentials can use `tokenRef: { source, provider, id }`
+* OAuth-mode profiles do not support SecretRef credentials; if `auth.profiles.<id>.mode` is set to `"oauth"`, SecretRef-backed `keyRef`/`tokenRef` input for that profile is rejected.
 
 Automation-friendly check (exit `1` when expired/missing, `2` when expiring):
 
@@ -106,10 +87,60 @@ Automation-friendly check (exit `1` when expired/missing, `2` when expiring):
 openclaw models status --check
 ```
 
-Optional ops scripts (systemd/Termux) are documented here:
-[/automation/auth-monitoring](/automation/auth-monitoring)
+Live auth probes:
 
-> `claude setup-token` requires an interactive TTY.
+```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+openclaw models status --probe
+```
+
+Notes:
+
+* Probe rows can come from auth profiles, env credentials, or `models.json`.
+* If explicit `auth.order.<provider>` omits a stored profile, probe reports
+  `excluded_by_auth_order` for that profile instead of trying it.
+* If auth exists but OpenClaw cannot resolve a probeable model candidate for
+  that provider, probe reports `status: no_model`.
+* Rate-limit cooldowns can be model-scoped. A profile cooling down for one
+  model can still be usable for a sibling model on the same provider.
+
+Optional ops scripts (systemd/Termux) are documented here:
+[Auth monitoring scripts](/help/scripts#auth-monitoring-scripts)
+
+## Anthropic: Claude CLI migration
+
+If Claude CLI is already installed and signed in on the gateway host, you can
+switch an existing Anthropic setup over to the CLI backend. This is a
+supported OpenClaw migration path for reusing a local Claude CLI login on that
+host.
+
+Prerequisites:
+
+* `claude` installed on the gateway host
+* Claude CLI already signed in there with `claude auth login`
+
+```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+openclaw models auth login --provider anthropic --method cli --set-default
+```
+
+This keeps your existing Anthropic auth profiles for rollback, but changes the
+default model selection to `claude-cli/...` and adds matching Claude CLI
+allowlist entries under `agents.defaults.models`.
+
+Verify:
+
+```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+openclaw models status
+```
+
+Onboarding shortcut:
+
+```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+openclaw onboard --auth-choice anthropic-cli
+```
+
+Interactive `openclaw onboard` and `openclaw configure` still prefer Claude CLI
+for Anthropic, but Anthropic setup-token is available again as a
+legacy/manual path and should be used with the Extra Usage billing expectation.
 
 ## Checking model auth status
 
@@ -131,7 +162,9 @@ hits a provider rate limit.
 * Google providers also include `GOOGLE_API_KEY` as an additional fallback.
 * The same key list is deduplicated before use.
 * OpenClaw retries with the next key only for rate-limit errors (for example
-  `429`, `rate_limit`, `quota`, `resource exhausted`).
+  `429`, `rate_limit`, `quota`, `resource exhausted`, `Too many concurrent
+  requests`, `ThrottlingException`, `concurrency limit reached`, or
+  `workers_ai ... quota limit exceeded`).
 * Non-rate-limit errors are not retried with alternate keys.
 * If all keys fail, the final error from the last attempt is returned.
 
@@ -154,13 +187,17 @@ openclaw models auth order clear --provider anthropic
 ```
 
 Use `--agent <id>` to target a specific agent; omit it to use the configured default agent.
+When you debug order issues, `openclaw models status --probe` shows omitted
+stored profiles as `excluded_by_auth_order` instead of silently skipping them.
+When you debug cooldown issues, remember that rate-limit cooldowns can be tied
+to one model id rather than the whole provider profile.
 
 ## Troubleshooting
 
 ### "No credentials found"
 
-If the Anthropic token profile is missing, run `claude setup-token` on the
-**gateway host**, then re-check:
+If the Anthropic profile is missing, migrate that setup to Claude CLI or an API
+key on the **gateway host**, then re-check:
 
 ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw models status
@@ -168,12 +205,14 @@ openclaw models status
 
 ### Token expiring/expired
 
-Run `openclaw models status` to confirm which profile is expiring. If the profile
-is missing, rerun `claude setup-token` and paste the token again.
+Run `openclaw models status` to confirm which profile is expiring. If a legacy
+Anthropic token profile is missing or expired, migrate that setup to Claude CLI
+or an API key.
 
-## Requirements
+## Claude CLI requirements
 
-* Anthropic subscription account (for `claude setup-token`)
+Only needed for the Anthropic Claude CLI reuse path:
+
 * Claude Code CLI installed (`claude` command available)
 
 

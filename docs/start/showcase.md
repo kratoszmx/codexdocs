@@ -9,7 +9,7 @@
 Real projects from the community. See what people are building with OpenClaw.
 
 <Info>
-  **Want to be featured?** Share your project in [#showcase on Discord](https://discord.gg/clawd) or [tag @openclaw on X](https://x.com/openclaw).
+  **Want to be featured?** Share your project in [#self-promotion on Discord](https://discord.gg/clawd) or [tag @openclaw on X](https://x.com/openclaw).
 </Info>
 
 ## 🎥 OpenClaw in Action
@@ -109,7 +109,7 @@ Full setup walkthrough (28m) by VelvetShark.
     <img src="https://mintcdn.com/clawdhub/GRmEr1Eswqv6yeL1/assets/showcase/papla-tts.jpg?fit=max&auto=format&n=GRmEr1Eswqv6yeL1&q=85&s=ddb4e93ba2b9e927601bbfef85a62d0e" alt="Telegram voice note output from TTS" width="1200" height="630" data-path="assets/showcase/papla-tts.jpg" />
   </Card>
 
-  <Card title="CodexMonitor" icon="eye" href="https://clawhub.com/odrobnik/codexmonitor">
+  <Card title="CodexMonitor" icon="eye" href="https://clawhub.ai/odrobnik/codexmonitor">
     **@odrobnik** • `devtools` `codex` `brew`
 
     Homebrew-installed helper to list/inspect/watch local OpenAI Codex sessions (CLI + VS Code).
@@ -117,7 +117,7 @@ Full setup walkthrough (28m) by VelvetShark.
     <img src="https://mintcdn.com/clawdhub/GRmEr1Eswqv6yeL1/assets/showcase/codexmonitor.png?fit=max&auto=format&n=GRmEr1Eswqv6yeL1&q=85&s=7b85a6c965ec9b86025364799cf208f1" alt="CodexMonitor on ClawHub" width="1200" height="630" data-path="assets/showcase/codexmonitor.png" />
   </Card>
 
-  <Card title="Bambu 3D Printer Control" icon="print" href="https://clawhub.com/tobiasbischoff/bambu-cli">
+  <Card title="Bambu 3D Printer Control" icon="print" href="https://clawhub.ai/tobiasbischoff/bambu-cli">
     **@tobiasbischoff** • `hardware` `3d-printing` `skill`
 
     Control and troubleshoot BambuLab printers: status, jobs, camera, AMS, calibration, and more.
@@ -125,7 +125,7 @@ Full setup walkthrough (28m) by VelvetShark.
     <img src="https://mintcdn.com/clawdhub/GRmEr1Eswqv6yeL1/assets/showcase/bambu-cli.png?fit=max&auto=format&n=GRmEr1Eswqv6yeL1&q=85&s=32e26dc500fb5362b20f15ba3d6f8658" alt="Bambu CLI skill on ClawHub" width="1200" height="630" data-path="assets/showcase/bambu-cli.png" />
   </Card>
 
-  <Card title="Vienna Transport (Wiener Linien)" icon="train" href="https://clawhub.com/hjanuschka/wienerlinien">
+  <Card title="Vienna Transport (Wiener Linien)" icon="train" href="https://clawhub.ai/hjanuschka/wienerlinien">
     **@hjanuschka** • `travel` `transport` `skill`
 
     Real-time departures, disruptions, elevator status, and routing for Vienna's public transport.
@@ -139,7 +139,7 @@ Full setup walkthrough (28m) by VelvetShark.
     Automated UK school meal booking via ParentPay. Uses mouse coordinates for reliable table cell clicking.
   </Card>
 
-  <Card title="R2 Upload (Send Me My Files)" icon="cloud-arrow-up" href="https://clawhub.com/skills/r2-upload">
+  <Card title="R2 Upload (Send Me My Files)" icon="cloud-arrow-up" href="https://clawhub.ai/skills/r2-upload">
     **@julianengel** • `files` `r2` `presigned-urls`
 
     Upload to Cloudflare R2/S3 and generate secure presigned download links. Perfect for remote OpenClaw instances.
@@ -295,7 +295,7 @@ Full setup walkthrough (28m) by VelvetShark.
     Vapi voice assistant ↔ OpenClaw HTTP bridge. Near real-time phone calls with your agent.
   </Card>
 
-  <Card title="OpenRouter Transcription" icon="microphone" href="https://clawhub.com/obviyus/openrouter-transcribe">
+  <Card title="OpenRouter Transcription" icon="microphone" href="https://clawhub.ai/obviyus/openrouter-transcribe">
     **@obviyus** • `transcription` `multilingual` `skill`
 
     Multi-lingual audio transcription via OpenRouter (Gemini, etc). Available on ClawHub.
@@ -311,7 +311,7 @@ Full setup walkthrough (28m) by VelvetShark.
     OpenClaw gateway running on Home Assistant OS with SSH tunnel support and persistent state.
   </Card>
 
-  <Card title="Home Assistant Skill" icon="toggle-on" href="https://clawhub.com/skills/homeassistant">
+  <Card title="Home Assistant Skill" icon="toggle-on" href="https://clawhub.ai/skills/homeassistant">
     **ClawHub** • `homeassistant` `skill` `automation`
 
     Control and automate Home Assistant devices via natural language.
@@ -323,7 +323,7 @@ Full setup walkthrough (28m) by VelvetShark.
     Batteries-included nixified OpenClaw configuration for reproducible deployments.
   </Card>
 
-  <Card title="CalDAV Calendar" icon="calendar" href="https://clawhub.com/skills/caldav-calendar">
+  <Card title="CalDAV Calendar" icon="calendar" href="https://clawhub.ai/skills/caldav-calendar">
     **ClawHub** • `calendar` `caldav` `skill`
 
     Calendar skill using khal/vdirsyncer. Self-hosted calendar integration.
@@ -368,7 +368,7 @@ Have something to share? We'd love to feature it!
 
 <Steps>
   <Step title="Share It">
-    Post in [#showcase on Discord](https://discord.gg/clawd) or [tweet @openclaw](https://x.com/openclaw)
+    Post in [#self-promotion on Discord](https://discord.gg/clawd) or [tweet @openclaw](https://x.com/openclaw)
   </Step>
 
   <Step title="Include Details">

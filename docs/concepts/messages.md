@@ -150,5 +150,12 @@ Outbound message formatting is centralized in `messages`:
 
 Details: [Configuration](/gateway/configuration-reference#messages) and channel docs.
 
+## Related
+
+* [Streaming](/concepts/streaming) — real-time message delivery
+* [Retry](/concepts/retry) — message delivery retry behavior
+* [Queue](/concepts/queue) — message processing queue
+* [Channels](/channels) — messaging platform integrations
+
 
 Built with [Mintlify](https://mintlify.com).

@@ -1,16 +1,10 @@
 https://docs.openclaw.ai/auth-credential-semantics.md
-https://docs.openclaw.ai/automation/auth-monitoring.md
-https://docs.openclaw.ai/automation/clawflow.md
 https://docs.openclaw.ai/automation/cron-jobs.md
-https://docs.openclaw.ai/automation/cron-vs-heartbeat.md
-https://docs.openclaw.ai/automation/gmail-pubsub.md
 https://docs.openclaw.ai/automation/hooks.md
 https://docs.openclaw.ai/automation/index.md
-https://docs.openclaw.ai/automation/poll.md
 https://docs.openclaw.ai/automation/standing-orders.md
+https://docs.openclaw.ai/automation/taskflow.md
 https://docs.openclaw.ai/automation/tasks.md
-https://docs.openclaw.ai/automation/troubleshooting.md
-https://docs.openclaw.ai/automation/webhook.md
 https://docs.openclaw.ai/channels/bluebubbles.md
 https://docs.openclaw.ai/channels/broadcast-groups.md
 https://docs.openclaw.ai/channels/channel-routing.md
@@ -99,6 +93,7 @@ https://docs.openclaw.ai/concepts/compaction.md
 https://docs.openclaw.ai/concepts/context-engine.md
 https://docs.openclaw.ai/concepts/context.md
 https://docs.openclaw.ai/concepts/delegate-architecture.md
+https://docs.openclaw.ai/concepts/dreaming.md
 https://docs.openclaw.ai/concepts/features.md
 https://docs.openclaw.ai/concepts/markdown-formatting.md
 https://docs.openclaw.ai/concepts/memory-builtin.md
@@ -118,6 +113,7 @@ https://docs.openclaw.ai/concepts/retry.md
 https://docs.openclaw.ai/concepts/session-pruning.md
 https://docs.openclaw.ai/concepts/session-tool.md
 https://docs.openclaw.ai/concepts/session.md
+https://docs.openclaw.ai/concepts/soul.md
 https://docs.openclaw.ai/concepts/streaming.md
 https://docs.openclaw.ai/concepts/system-prompt.md
 https://docs.openclaw.ai/concepts/timezone.md
@@ -131,7 +127,6 @@ https://docs.openclaw.ai/gateway/authentication.md
 https://docs.openclaw.ai/gateway/background-process.md
 https://docs.openclaw.ai/gateway/bonjour.md
 https://docs.openclaw.ai/gateway/bridge-protocol.md
-https://docs.openclaw.ai/gateway/cli-backends.md
 https://docs.openclaw.ai/gateway/configuration-examples.md
 https://docs.openclaw.ai/gateway/configuration-reference.md
 https://docs.openclaw.ai/gateway/configuration.md
@@ -248,12 +243,17 @@ https://docs.openclaw.ai/plugins/sdk-setup.md
 https://docs.openclaw.ai/plugins/sdk-testing.md
 https://docs.openclaw.ai/plugins/voice-call.md
 https://docs.openclaw.ai/prose.md
+https://docs.openclaw.ai/providers/alibaba.md
 https://docs.openclaw.ai/providers/anthropic.md
+https://docs.openclaw.ai/providers/bedrock-mantle.md
 https://docs.openclaw.ai/providers/bedrock.md
+https://docs.openclaw.ai/providers/chutes.md
 https://docs.openclaw.ai/providers/claude-max-api-proxy.md
 https://docs.openclaw.ai/providers/cloudflare-ai-gateway.md
+https://docs.openclaw.ai/providers/comfy.md
 https://docs.openclaw.ai/providers/deepgram.md
 https://docs.openclaw.ai/providers/deepseek.md
+https://docs.openclaw.ai/providers/fal.md
 https://docs.openclaw.ai/providers/github-copilot.md
 https://docs.openclaw.ai/providers/glm.md
 https://docs.openclaw.ai/providers/google.md
@@ -275,8 +275,9 @@ https://docs.openclaw.ai/providers/openrouter.md
 https://docs.openclaw.ai/providers/perplexity-provider.md
 https://docs.openclaw.ai/providers/qianfan.md
 https://docs.openclaw.ai/providers/qwen.md
-https://docs.openclaw.ai/providers/qwen_modelstudio.md
+https://docs.openclaw.ai/providers/runway.md
 https://docs.openclaw.ai/providers/sglang.md
+https://docs.openclaw.ai/providers/stepfun.md
 https://docs.openclaw.ai/providers/synthetic.md
 https://docs.openclaw.ai/providers/together.md
 https://docs.openclaw.ai/providers/venice.md
@@ -352,6 +353,8 @@ https://docs.openclaw.ai/tools/llm-task.md
 https://docs.openclaw.ai/tools/lobster.md
 https://docs.openclaw.ai/tools/loop-detection.md
 https://docs.openclaw.ai/tools/multi-agent-sandbox-tools.md
+https://docs.openclaw.ai/tools/music-generation.md
+https://docs.openclaw.ai/tools/ollama-search.md
 https://docs.openclaw.ai/tools/pdf.md
 https://docs.openclaw.ai/tools/perplexity-search.md
 https://docs.openclaw.ai/tools/plugin.md
@@ -364,6 +367,7 @@ https://docs.openclaw.ai/tools/subagents.md
 https://docs.openclaw.ai/tools/tavily.md
 https://docs.openclaw.ai/tools/thinking.md
 https://docs.openclaw.ai/tools/tts.md
+https://docs.openclaw.ai/tools/video-generation.md
 https://docs.openclaw.ai/tools/web-fetch.md
 https://docs.openclaw.ai/tools/web.md
 https://docs.openclaw.ai/vps.md

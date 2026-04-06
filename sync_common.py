@@ -4,6 +4,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from tqdm.auto import tqdm
+
 import project_env  # noqa: F401
 from http_utils import fetch_bytes, fetch_text
 from markdown_utils import count_markdown_body_lines, is_empty_or_sparse_markdown
@@ -98,13 +100,15 @@ def sync_rels(rels: list[str], timeout: int = 45, force_download: bool = True) -
     downloaded = 0
     failures: list[tuple[str, str]] = []
 
-    for rel in rels:
+    progress = tqdm(rels, desc="sync docs", unit="file")
+    for rel in progress:
         path = doc_path(rel)
         need_download = force_download or (not path.exists())
         if not need_download:
             text = path.read_text(encoding="utf-8", errors="ignore")
             need_download = is_empty_or_truncated(text)
         if not need_download:
+            progress.set_postfix(downloaded=downloaded, failures=len(failures), refresh=False)
             continue
 
         ok, err = download_rel(rel, timeout=timeout)
@@ -112,6 +116,7 @@ def sync_rels(rels: list[str], timeout: int = 45, force_download: bool = True) -
             downloaded += 1
         else:
             failures.append((rel, err or "unknown"))
+        progress.set_postfix(downloaded=downloaded, failures=len(failures), refresh=False)
 
     return downloaded, failures
 
@@ -119,12 +124,15 @@ def sync_rels(rels: list[str], timeout: int = 45, force_download: bool = True) -
 def check_rels(rels: list[str]) -> tuple[list[str], list[str]]:
     missing: list[str] = []
     bad: list[str] = []
-    for rel in rels:
+    progress = tqdm(rels, desc="check docs", unit="file")
+    for rel in progress:
         path = doc_path(rel)
         if not path.exists():
             missing.append(rel)
+            progress.set_postfix(missing=len(missing), bad=len(bad), refresh=False)
             continue
         text = path.read_text(encoding="utf-8", errors="ignore")
         if is_empty_or_truncated(text):
             bad.append(rel)
+        progress.set_postfix(missing=len(missing), bad=len(bad), refresh=False)
     return missing, bad

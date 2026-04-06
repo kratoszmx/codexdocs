@@ -1,0 +1,7 @@
+# Third-party Python dependencies for this repo
+# Runtime
+
+tqdm==4.67.3
+
+# Tests
+pytest==9.0.2

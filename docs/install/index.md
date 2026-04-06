@@ -50,7 +50,19 @@ For all flags and CI/automation options, see [Installer internals](/install/inst
 
 ## Alternative install methods
 
-### npm or pnpm
+### Local prefix installer (`install-cli.sh`)
+
+Use this when you want OpenClaw and Node kept under a local prefix such as
+`~/.openclaw`, without depending on a system-wide Node install:
+
+```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+curl -fsSL https://openclaw.ai/install-cli.sh | bash
+```
+
+It supports npm installs by default, plus git-checkout installs under the same
+prefix flow. Full reference: [Installer internals](/install/installer#install-clish).
+
+### npm, pnpm, or bun
 
 If you already manage Node yourself:
 
@@ -71,6 +83,17 @@ If you already manage Node yourself:
 
     <Note>
       pnpm requires explicit approval for packages with build scripts. Run `pnpm approve-builds -g` after the first install.
+    </Note>
+  </Tab>
+
+  <Tab title="bun">
+    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    bun add -g openclaw@latest
+    openclaw onboard --install-daemon
+    ```
+
+    <Note>
+      Bun is supported for the global CLI install path. For the Gateway runtime, Node remains the recommended daemon runtime.
     </Note>
   </Tab>
 </Tabs>
@@ -134,6 +157,12 @@ openclaw --version      # confirm the CLI is available
 openclaw doctor         # check for config issues
 openclaw gateway status # verify the Gateway is running
 ```
+
+If you want managed startup after install:
+
+* macOS: LaunchAgent via `openclaw onboard --install-daemon` or `openclaw gateway install`
+* Linux/WSL2: systemd user service via the same commands
+* Native Windows: Scheduled Task first, with a per-user Startup-folder login item fallback if task creation is denied
 
 ## Hosting and deployment
 

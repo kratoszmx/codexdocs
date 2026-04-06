@@ -8,6 +8,8 @@
 
 Manage agent hooks (event-driven automations for commands like `/new`, `/reset`, and gateway startup).
 
+Running `openclaw hooks` with no subcommand is equivalent to `openclaw hooks list`.
+
 Related:
 
 * Hooks: [Hooks](/automation/hooks)
@@ -65,7 +67,7 @@ Show detailed information about a specific hook.
 
 **Arguments:**
 
-* `<name>`: Hook name (e.g., `session-memory`)
+* `<name>`: Hook name or hook key (e.g., `session-memory`)
 
 **Options:**
 
@@ -123,7 +125,7 @@ Not ready: 0
 openclaw hooks enable <name>
 ```
 
-Enable a specific hook by adding it to your config (`~/.openclaw/config.json`).
+Enable a specific hook by adding it to your config (`~/.openclaw/openclaw.json` by default).
 
 **Note:** Workspace hooks are disabled by default until enabled here or in config. Hooks managed by plugins show `plugin:<id>` in `openclaw hooks list` and can’t be enabled/disabled here. Enable/disable the plugin instead.
 
@@ -183,6 +185,11 @@ openclaw hooks disable command-logger
 **After disabling:**
 
 * Restart the gateway so hooks reload
+
+## Notes
+
+* `openclaw hooks list --json`, `info --json`, and `check --json` write structured JSON directly to stdout.
+* Plugin-managed hooks cannot be enabled or disabled here; enable or disable the owning plugin instead.
 
 ## Install Hook Packs
 

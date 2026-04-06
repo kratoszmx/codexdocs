@@ -6,8 +6,6 @@
 
 # Gateway lock
 
-Last updated: 2025-12-11
-
 ## Why
 
 * Ensure only one gateway instance runs per base port on the same host; additional gateways must use isolated profiles and unique ports.
@@ -30,6 +28,11 @@ Last updated: 2025-12-11
 
 * If the port is occupied by *another* process, the error is the same; free the port or choose another with `openclaw gateway --port <port>`.
 * The macOS app still maintains its own lightweight PID guard before spawning the gateway; the runtime lock is enforced by the WebSocket bind.
+
+## Related
+
+* [Multiple Gateways](/gateway/multiple-gateways) — running multiple instances with unique ports
+* [Troubleshooting](/gateway/troubleshooting) — diagnosing `EADDRINUSE` and port conflicts
 
 
 Built with [Mintlify](https://mintlify.com).

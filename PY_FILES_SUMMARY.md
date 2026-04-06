@@ -19,6 +19,7 @@
 - 扫描一个或多个 Markdown 文件/目录。
 - 提取标题层级与 Markdown 链接。
 - 标记疑似空文档或疑似截断文档。
+- 扫描过程中使用 `tqdm` 展示进度条。
 - 内部复用 `myutils/markdown_utils.py`。
 
 **用法**
@@ -32,6 +33,7 @@
 - 按单个 section 同步文档。
 - 将对应链接写入 `urls/<section>.txt`。
 - 下载到 `docs/`，并对疑似空/截断文档自动重试。
+- 通过底层共享同步逻辑显示 `tqdm` 进度条。
 
 **用法**
 - `python3 sync_section.py <section>`
@@ -45,6 +47,7 @@
 - 按预设 sections 批量同步文档。
 - 将链接写入 `urls/selected_sections.txt`。
 - 下载到 `docs/`，并对疑似异常文档自动重试。
+- 通过底层共享同步逻辑显示 `tqdm` 进度条。
 
 **当前预设 sections**
 - `install`
@@ -69,6 +72,7 @@
 - 检查空文档或疑似截断文档。
 - 生成 `urls/all.txt`。
 - 按本地镜像规则写入文档：官网根级 Markdown 归档到 `docs/others/`，其余文档保持原 section 路径。
+- 在检查和下载阶段通过共享逻辑显示 `tqdm` 进度条。
 
 **用法**
 - `python3 sync_all_docs.py --check-only`：仅检查
@@ -83,6 +87,7 @@
 - 同步脚本的共享模块。
 - 统一处理 `llms.txt` 读取、URL 提取、文档下载、空文档/截断检测、URL 列表写入等公共逻辑。
 - 统一处理官网相对路径到本地镜像路径的映射规则：官网根级 Markdown 映射到 `docs/others/`，其余路径仍落在 `docs/` 原 section 下。
+- 在批量检查和下载时统一提供 `tqdm` 进度条。
 - 内部复用 `myutils/http_utils.py` 与 `myutils/markdown_utils.py`。
 
 **用法**

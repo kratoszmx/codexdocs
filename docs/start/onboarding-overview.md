@@ -7,7 +7,7 @@
 # Onboarding Overview
 
 OpenClaw has two onboarding paths. Both configure auth, the Gateway, and
-optional channels — they just differ in how you interact with the setup.
+optional chat channels — they just differ in how you interact with the setup.
 
 ## Which path should I use?
 
@@ -29,7 +29,9 @@ Regardless of which path you choose, onboarding sets up:
 1. **Model provider and auth** — API key, OAuth, or setup token for your chosen provider
 2. **Workspace** — directory for agent files, bootstrap templates, and memory
 3. **Gateway** — port, bind address, auth mode
-4. **Channels** (optional) — WhatsApp, Telegram, Discord, and more
+4. **Channels** (optional) — built-in and bundled chat channels such as
+   BlueBubbles, Discord, Feishu, Google Chat, Mattermost, Microsoft Teams,
+   Telegram, WhatsApp, and more
 5. **Daemon** (optional) — background service so the Gateway starts automatically
 
 ## CLI onboarding

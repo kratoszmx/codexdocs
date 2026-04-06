@@ -264,5 +264,11 @@ OpenClaw resolves when it needs a context engine.
 See also: [Compaction](/concepts/compaction), [Context](/concepts/context),
 [Plugins](/tools/plugin), [Plugin manifest](/plugins/manifest).
 
+## Related
+
+* [Context](/concepts/context) — how context is built for agent turns
+* [Plugin Architecture](/plugins/architecture) — registering context engine plugins
+* [Compaction](/concepts/compaction) — summarizing long conversations
+
 
 Built with [Mintlify](https://mintlify.com).

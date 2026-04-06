@@ -106,7 +106,7 @@
 
     **Notes:**
 
-    * Non-loopback binds (`--bind lan`) require `OPENCLAW_GATEWAY_TOKEN` for security.
+    * Non-loopback binds (`--bind lan`) require a valid gateway auth path. This Fly.io example uses `OPENCLAW_GATEWAY_TOKEN`, but `gateway.auth.password` or a correctly configured non-loopback `trusted-proxy` deployment also satisfy the requirement.
     * Treat these tokens like passwords.
     * **Prefer env vars over config file** for all API keys and tokens. This keeps secrets out of `openclaw.json` where they could be accidentally exposed or logged.
   </Step>
@@ -150,7 +150,7 @@
         "defaults": {
           "model": {
             "primary": "anthropic/claude-opus-4-6",
-            "fallbacks": ["anthropic/claude-sonnet-4-6", "openai/gpt-4o"]
+            "fallbacks": ["anthropic/claude-sonnet-4-6", "openai/gpt-5.4"]
           },
           "maxConcurrent": 4
         },
@@ -222,7 +222,9 @@
 
     Or visit `https://my-openclaw.fly.dev/`
 
-    Paste your gateway token (the one from `OPENCLAW_GATEWAY_TOKEN`) to authenticate.
+    Authenticate with the configured shared secret. This guide uses the gateway
+    token from `OPENCLAW_GATEWAY_TOKEN`; if you switched to password auth, use
+    that password instead.
 
     ### Logs
 
@@ -289,7 +291,7 @@ The lock file is at `/data/gateway.*.lock` (not in a subdirectory).
 
 ### Config Not Being Read
 
-If using `--allow-unconfigured`, the gateway creates a minimal config. Your custom config at `/data/openclaw.json` should be read on restart.
+`--allow-unconfigured` only bypasses the startup guard. It does not create or repair `/data/openclaw.json`, so make sure your real config exists and includes `gateway.mode="local"` when you want a normal local gateway start.
 
 Verify the config exists:
 
@@ -318,7 +320,8 @@ fly ssh console --command "rm /data/openclaw.json"
 
 ### State Not Persisting
 
-If you lose credentials or sessions after a restart, the state dir is writing to the container filesystem.
+If you lose auth profiles, channel/provider state, or sessions after a restart,
+the state dir is writing to the container filesystem.
 
 **Fix:** Ensure `OPENCLAW_STATE_DIR=/data` is set in `fly.toml` and redeploy.
 

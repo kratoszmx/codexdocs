@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from tqdm.auto import tqdm
+
 import project_env  # noqa: F401
 from markdown_utils import (
     count_markdown_body_lines,
@@ -42,7 +44,7 @@ def main() -> None:
         print("No markdown files found.")
         return
 
-    for path in files:
+    for path in tqdm(files, desc="scan markdown", unit="file"):
         data = scan_file(path)
         print(f"===== {data['path']} =====")
         print(

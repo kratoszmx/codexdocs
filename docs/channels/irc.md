@@ -239,5 +239,13 @@ Default account supports:
 * If login fails, verify nick availability and server password.
 * If TLS fails on a custom network, verify host/port and certificate setup.
 
+## Related
+
+* [Channels Overview](/channels) — all supported channels
+* [Pairing](/channels/pairing) — DM authentication and pairing flow
+* [Groups](/channels/groups) — group chat behavior and mention gating
+* [Channel Routing](/channels/channel-routing) — session routing for messages
+* [Security](/gateway/security) — access model and hardening
+
 
 Built with [Mintlify](https://mintlify.com).

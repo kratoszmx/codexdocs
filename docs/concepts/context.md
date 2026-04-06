@@ -168,5 +168,12 @@ pluggable interface, lifecycle hooks, and configuration.
 
 Either way, it reports sizes and top contributors; it does **not** dump the full system prompt or tool schemas.
 
+## Related
+
+* [Context Engine](/concepts/context-engine) — custom context injection via plugins
+* [Compaction](/concepts/compaction) — summarizing long conversations
+* [System Prompt](/concepts/system-prompt) — how the system prompt is built
+* [Agent Loop](/concepts/agent-loop) — the full agent execution cycle
+
 
 Built with [Mintlify](https://mintlify.com).

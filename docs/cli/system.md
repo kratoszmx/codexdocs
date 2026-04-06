@@ -9,10 +9,18 @@
 System-level helpers for the Gateway: enqueue system events, control heartbeats,
 and view presence.
 
+All `system` subcommands use Gateway RPC and accept the shared client flags:
+
+* `--url <url>`
+* `--token <token>`
+* `--timeout <ms>`
+* `--expect-final`
+
 ## Common commands
 
 ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw system event --text "Check for urgent follow-ups" --mode now
+openclaw system event --text "Check for urgent follow-ups" --url ws://127.0.0.1:18789 --token "$OPENCLAW_GATEWAY_TOKEN"
 openclaw system heartbeat enable
 openclaw system heartbeat last
 openclaw system presence
@@ -29,6 +37,7 @@ Flags:
 * `--text <text>`: required system event text.
 * `--mode <mode>`: `now` or `next-heartbeat` (default).
 * `--json`: machine-readable output.
+* `--url`, `--token`, `--timeout`, `--expect-final`: shared Gateway RPC flags.
 
 ## `system heartbeat last|enable|disable`
 
@@ -41,6 +50,7 @@ Heartbeat controls:
 Flags:
 
 * `--json`: machine-readable output.
+* `--url`, `--token`, `--timeout`, `--expect-final`: shared Gateway RPC flags.
 
 ## `system presence`
 
@@ -50,6 +60,7 @@ instances, and similar status lines).
 Flags:
 
 * `--json`: machine-readable output.
+* `--url`, `--token`, `--timeout`, `--expect-final`: shared Gateway RPC flags.
 
 ## Notes
 

@@ -39,8 +39,9 @@
 * [Control UI (browser)](/web/control-ui)
 * [Telegram](/channels/telegram)
 * [Discord](/channels/discord)
-* [Mattermost (plugin)](/channels/mattermost)
+* [Mattermost](/channels/mattermost)
 * [BlueBubbles (iMessage)](/channels/bluebubbles)
+* [QQ Bot](/channels/qqbot)
 * [iMessage (legacy)](/channels/imessage)
 * [Groups](/channels/groups)
 * [WhatsApp group messages](/channels/group-messages)
@@ -59,8 +60,8 @@
 
 * [Sessions](/concepts/session)
 * [Cron jobs](/automation/cron-jobs)
-* [Webhooks](/automation/webhook)
-* [Gmail hooks (Pub/Sub)](/automation/gmail-pubsub)
+* [Webhooks](/automation/cron-jobs#webhooks)
+* [Gmail hooks (Pub/Sub)](/automation/cron-jobs#gmail-pubsub-integration)
 * [Security](/gateway/security)
 * [Troubleshooting](/gateway/troubleshooting)
 

@@ -6,7 +6,7 @@
 
 # Groups
 
-OpenClaw treats group chats consistently across surfaces: WhatsApp, Telegram, Discord, Slack, Signal, iMessage, Microsoft Teams, Zalo.
+OpenClaw treats group chats consistently across surfaces: Discord, iMessage, Matrix, Microsoft Teams, Signal, Slack, Telegram, WhatsApp, Zalo.
 
 ## Beginner intro (2 minutes)
 
@@ -35,6 +35,28 @@ requireMention? yes -> mentioned? no -> store for context only
 otherwise -> reply
 ```
 
+## Context visibility and allowlists
+
+Two different controls are involved in group safety:
+
+* **Trigger authorization**: who can trigger the agent (`groupPolicy`, `groups`, `groupAllowFrom`, channel-specific allowlists).
+* **Context visibility**: what supplemental context is injected into the model (reply text, quotes, thread history, forwarded metadata).
+
+By default, OpenClaw prioritizes normal chat behavior and keeps context mostly as received. This means allowlists primarily decide who can trigger actions, not a universal redaction boundary for every quoted or historical snippet.
+
+Current behavior is channel-specific:
+
+* Some channels already apply sender-based filtering for supplemental context in specific paths (for example Slack thread seeding, Matrix reply/thread lookups).
+* Other channels still pass quote/reply/forward context through as received.
+
+Hardening direction (planned):
+
+* `contextVisibility: "all"` (default) keeps current as-received behavior.
+* `contextVisibility: "allowlist"` filters supplemental context to allowlisted senders.
+* `contextVisibility: "allowlist_quote"` is `allowlist` plus one explicit quote/reply exception.
+
+Until this hardening model is implemented consistently across channels, expect differences by surface.
+
 <img src="https://mintcdn.com/clawdhub/dpADRo8IUoiDztzJ/images/groups-flow.svg?fit=max&auto=format&n=dpADRo8IUoiDztzJ&q=85&s=eeb387df91a967fbbe8bf8f80ae41dd7" alt="Group message flow" width="960" height="260" data-path="images/groups-flow.svg" />
 
 If you want...
@@ -52,6 +74,8 @@ If you want...
 * Telegram forum topics add `:topic:<threadId>` to the group id so each topic has its own session.
 * Direct chats use the main session (or per-sender if configured).
 * Heartbeats are skipped for group sessions.
+
+<a id="pattern-personal-dms-public-groups-single-agent" />
 
 ## Pattern: personal DMs + public groups (single agent)
 
@@ -186,7 +210,7 @@ Notes:
 * DM pairing approvals (`*-allowFrom` store entries) apply to DM access only; group sender authorization stays explicit to group allowlists.
 * Discord: allowlist uses `channels.discord.guilds.<id>.channels`.
 * Slack: allowlist uses `channels.slack.channels`.
-* Matrix: allowlist uses `channels.matrix.groups` (room IDs, aliases, or names). Use `channels.matrix.groupAllowFrom` to restrict senders; per-room `users` allowlists are also supported.
+* Matrix: allowlist uses `channels.matrix.groups`. Prefer room IDs or aliases; joined-room name lookup is best-effort, and unresolved names are ignored at runtime. Use `channels.matrix.groupAllowFrom` to restrict senders; per-room `users` allowlists are also supported.
 * Group DMs are controlled separately (`channels.discord.dm.*`, `channels.slack.dm.*`).
 * Telegram allowlist can match user IDs (`"123456789"`, `"telegram:123456789"`, `"tg:123456789"`) or usernames (`"@alice"` or `"alice"`); prefixes are case-insensitive.
 * Default is `groupPolicy: "allowlist"`; if your group allowlist is empty, group messages are blocked.
@@ -295,6 +319,9 @@ Notes:
 
 When `channels.whatsapp.groups`, `channels.telegram.groups`, or `channels.imessage.groups` is configured, the keys act as a group allowlist. Use `"*"` to allow all groups while still setting default mention behavior.
 
+Common confusion: DM pairing approval is not the same as group authorization.
+For channels that support DM pairing, the pairing store unlocks DMs only. Group commands still require explicit group sender authorization from config allowlists such as `groupAllowFrom` or the documented config fallback for that channel.
+
 Common intents (copy/paste):
 
 1. Disable all group replies
@@ -364,6 +391,10 @@ Group inbound payloads set:
 * `GroupMembers` (if known)
 * `WasMentioned` (mention gating result)
 * Telegram forum topics also include `MessageThreadId` and `IsForum`.
+
+Channel specific notes:
+
+* BlueBubbles can optionally enrich unnamed macOS group participants from the local Contacts database before populating `GroupMembers`. This is off by default and only runs after normal group gating passes.
 
 The agent system prompt includes a group intro on the first turn of a new group session. It reminds the model to respond like a human, avoid Markdown tables, and avoid typing literal `\n` sequences.
 
