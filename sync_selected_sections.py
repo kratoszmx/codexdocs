@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import argparse
 
-from sync_common import all_doc_urls, filter_rels_by_prefixes, rels_from_urls, sync_rels, urls_from_rels, write_url_list
+from sync_common import all_doc_urls, filter_rels_by_prefixes, rels_from_urls, sync_rels, urls_from_rels, write_url_list, write_url_records
 
 SECTIONS = ["install", "channels", "tools", "plugins", "platforms", "gateway", "reference", "help"]
 
@@ -15,6 +15,7 @@ def main() -> None:
 
     rels = filter_rels_by_prefixes(rels_from_urls(all_doc_urls(timeout=args.timeout)), SECTIONS)
     write_url_list("selected_sections.txt", urls_from_rels(rels))
+    write_url_records(rels)
 
     downloaded, failures = sync_rels(rels, timeout=args.timeout, force_download=True)
     print(f"SYNCED {len(rels)} files")

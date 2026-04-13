@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import argparse
 
-from sync_common import all_doc_urls, filter_rels_by_prefix, rels_from_urls, sync_rels, urls_from_rels, write_url_list
+from sync_common import all_doc_urls, filter_rels_by_prefix, rels_from_urls, sync_rels, write_url_records
 
 
 def main() -> None:
@@ -13,7 +13,7 @@ def main() -> None:
     args = parser.parse_args()
 
     rels = filter_rels_by_prefix(rels_from_urls(all_doc_urls(timeout=args.timeout)), args.section)
-    write_url_list(f"{args.section}.txt", urls_from_rels(rels))
+    write_url_records(rels)
 
     downloaded, failures = sync_rels(rels, timeout=args.timeout, force_download=True)
     print(f"{args.section}: {len(rels)}")

@@ -16,6 +16,7 @@ OTHERS_ROOT = DOCS_ROOT / "others"
 URLS_DIR = ROOT / "urls"
 LLMS_URL = "https://docs.openclaw.ai/llms.txt"
 DOC_PREFIX = "https://docs.openclaw.ai/"
+LOCAL_OTHERS_SECTIONS = frozenset({"automation", "debug", "diagnostics", "nodes", "plugins", "security", "start", "web"})
 
 
 def body_line_count(text: str) -> int:
@@ -42,17 +43,45 @@ def urls_from_rels(rels: list[str]) -> list[str]:
     return [DOC_PREFIX + rel for rel in rels]
 
 
+def local_doc_rel(rel: str) -> Path:
+    """Map a docs.openclaw.ai relative path to the local path under `docs/`.
+
+    Local layout rule:
+    - root-level markdown files are grouped under `docs/others/`
+    - selected top-level sections also live under `docs/others/<section>/`
+    - all other nested docs keep their original section path under `docs/`
+    """
+    rel_path = Path(rel)
+    if rel_path.parts[:1] == ("others",):
+        return rel_path
+    if rel_path.parent == Path("."):
+        return Path("others") / rel_path.name
+    if rel_path.parts[0] in LOCAL_OTHERS_SECTIONS:
+        return Path("others") / rel_path
+    return rel_path
+
+
+def site_rel_from_local(local_rel: str | Path) -> str:
+    """Invert a local `docs/` relative path back to a site-relative path."""
+    local_path = Path(local_rel)
+    if local_path.parts[:1] != ("others",):
+        return local_path.as_posix()
+    if len(local_path.parts) == 2:
+        return local_path.name
+    if local_path.parts[1] in LOCAL_OTHERS_SECTIONS:
+        return Path(*local_path.parts[1:]).as_posix()
+    return local_path.as_posix()
+
+
 def doc_path(rel: str) -> Path:
     """Map a docs.openclaw.ai relative markdown path to the local mirror path.
 
     Local layout rule:
-    - nested docs keep their original section path under `docs/`
     - root-level markdown files are grouped under `docs/others/`
+    - selected top-level sections also live under `docs/others/<section>/`
+    - all other nested docs keep their original section path under `docs/`
     """
-    rel_path = Path(rel)
-    if rel_path.parent == Path("."):
-        return OTHERS_ROOT / rel_path.name
-    return DOCS_ROOT / rel_path
+    return DOCS_ROOT / local_doc_rel(rel)
 
 
 def ensure_dirs() -> None:
@@ -64,6 +93,75 @@ def ensure_dirs() -> None:
 def write_url_list(name: str, urls: list[str]) -> None:
     ensure_dirs()
     (URLS_DIR / name).write_text("\n".join(urls) + "\n", encoding="utf-8")
+
+
+def url_record_path(rel: str) -> Path:
+    """Return the mirrored URL-record path under `urls/` for a doc rel path.
+
+    The `urls/` tree mirrors the local `docs/` tree. Examples:
+    - `gateway/configuration.md` -> `urls/gateway/configuration.txt`
+    - root-level `index.md` -> `urls/others/index.txt`
+    - `automation/index.md` -> `urls/others/automation/index.txt`
+    """
+    local_rel = local_doc_rel(rel)
+    return (URLS_DIR / local_rel).with_suffix(".txt")
+
+
+def write_url_record(rel: str) -> Path:
+    ensure_dirs()
+    path = url_record_path(rel)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(DOC_PREFIX + rel + "\n", encoding="utf-8")
+    return path
+
+
+def write_url_records(rels: list[str]) -> list[Path]:
+    return [write_url_record(rel) for rel in rels]
+
+
+def nested_others_rels_from_docs() -> list[str]:
+    """Return unambiguous site rels recoverable from the local docs tree.
+
+    Local `docs/others/*.md` at the top level can be ambiguous because root-level
+    docs are also grouped there. Nested paths like `docs/others/web/index.md`
+    or `docs/others/custom/index.md` map unambiguously back to a site rel.
+    """
+    rels: list[str] = []
+    for path in DOCS_ROOT.rglob("*.md"):
+        local_rel = path.relative_to(DOCS_ROOT)
+        if local_rel.parts[:1] == ("others",) and len(local_rel.parts) > 2:
+            rels.append(site_rel_from_local(local_rel))
+    return sorted(set(rels))
+
+
+def rebuild_url_records(rels: list[str], keep_root_files: set[str] | None = None) -> list[Path]:
+    """Rewrite mirrored URL records so `urls/` matches the local `docs/` tree.
+
+    Root index files such as `all.txt` can be kept via `keep_root_files`.
+    All other stale `.txt` files under `urls/` are removed.
+    """
+    ensure_dirs()
+    keep_root = {"all.txt", "selected_sections.txt"} if keep_root_files is None else set(keep_root_files)
+    all_rels = sorted(set(rels) | set(nested_others_rels_from_docs()))
+    desired = {url_record_path(rel).relative_to(URLS_DIR) for rel in all_rels}
+
+    for path in sorted(URLS_DIR.rglob("*.txt")):
+        rel_path = path.relative_to(URLS_DIR)
+        if rel_path.parent == Path(".") and rel_path.name in keep_root:
+            continue
+        if rel_path not in desired:
+            path.unlink()
+
+    written = write_url_records(all_rels)
+
+    for path in sorted((p for p in URLS_DIR.rglob("*") if p.is_dir()), reverse=True):
+        if path == URLS_DIR:
+            continue
+        if any(path.iterdir()):
+            continue
+        path.rmdir()
+
+    return written
 
 
 def filter_rels_by_prefix(rels: list[str], prefix: str) -> list[str]:

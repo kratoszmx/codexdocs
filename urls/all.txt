@@ -60,6 +60,7 @@ https://docs.openclaw.ai/cli/gateway.md
 https://docs.openclaw.ai/cli/health.md
 https://docs.openclaw.ai/cli/hooks.md
 https://docs.openclaw.ai/cli/index.md
+https://docs.openclaw.ai/cli/infer.md
 https://docs.openclaw.ai/cli/logs.md
 https://docs.openclaw.ai/cli/mcp.md
 https://docs.openclaw.ai/cli/memory.md
@@ -85,6 +86,8 @@ https://docs.openclaw.ai/cli/uninstall.md
 https://docs.openclaw.ai/cli/update.md
 https://docs.openclaw.ai/cli/voicecall.md
 https://docs.openclaw.ai/cli/webhooks.md
+https://docs.openclaw.ai/cli/wiki.md
+https://docs.openclaw.ai/concepts/active-memory.md
 https://docs.openclaw.ai/concepts/agent-loop.md
 https://docs.openclaw.ai/concepts/agent-workspace.md
 https://docs.openclaw.ai/concepts/agent.md
@@ -127,6 +130,7 @@ https://docs.openclaw.ai/gateway/authentication.md
 https://docs.openclaw.ai/gateway/background-process.md
 https://docs.openclaw.ai/gateway/bonjour.md
 https://docs.openclaw.ai/gateway/bridge-protocol.md
+https://docs.openclaw.ai/gateway/cli-backends.md
 https://docs.openclaw.ai/gateway/configuration-examples.md
 https://docs.openclaw.ai/gateway/configuration-reference.md
 https://docs.openclaw.ai/gateway/configuration.md
@@ -231,8 +235,11 @@ https://docs.openclaw.ai/platforms/windows.md
 https://docs.openclaw.ai/plugins/architecture.md
 https://docs.openclaw.ai/plugins/building-plugins.md
 https://docs.openclaw.ai/plugins/bundles.md
+https://docs.openclaw.ai/plugins/codex-harness.md
 https://docs.openclaw.ai/plugins/community.md
 https://docs.openclaw.ai/plugins/manifest.md
+https://docs.openclaw.ai/plugins/memory-wiki.md
+https://docs.openclaw.ai/plugins/sdk-agent-harness.md
 https://docs.openclaw.ai/plugins/sdk-channel-plugins.md
 https://docs.openclaw.ai/plugins/sdk-entrypoints.md
 https://docs.openclaw.ai/plugins/sdk-migration.md
@@ -242,9 +249,12 @@ https://docs.openclaw.ai/plugins/sdk-runtime.md
 https://docs.openclaw.ai/plugins/sdk-setup.md
 https://docs.openclaw.ai/plugins/sdk-testing.md
 https://docs.openclaw.ai/plugins/voice-call.md
+https://docs.openclaw.ai/plugins/webhooks.md
+https://docs.openclaw.ai/plugins/zalouser.md
 https://docs.openclaw.ai/prose.md
 https://docs.openclaw.ai/providers/alibaba.md
 https://docs.openclaw.ai/providers/anthropic.md
+https://docs.openclaw.ai/providers/arcee.md
 https://docs.openclaw.ai/providers/bedrock-mantle.md
 https://docs.openclaw.ai/providers/bedrock.md
 https://docs.openclaw.ai/providers/chutes.md
@@ -254,14 +264,17 @@ https://docs.openclaw.ai/providers/comfy.md
 https://docs.openclaw.ai/providers/deepgram.md
 https://docs.openclaw.ai/providers/deepseek.md
 https://docs.openclaw.ai/providers/fal.md
+https://docs.openclaw.ai/providers/fireworks.md
 https://docs.openclaw.ai/providers/github-copilot.md
 https://docs.openclaw.ai/providers/glm.md
 https://docs.openclaw.ai/providers/google.md
 https://docs.openclaw.ai/providers/groq.md
 https://docs.openclaw.ai/providers/huggingface.md
 https://docs.openclaw.ai/providers/index.md
+https://docs.openclaw.ai/providers/inferrs.md
 https://docs.openclaw.ai/providers/kilocode.md
 https://docs.openclaw.ai/providers/litellm.md
+https://docs.openclaw.ai/providers/lmstudio.md
 https://docs.openclaw.ai/providers/minimax.md
 https://docs.openclaw.ai/providers/mistral.md
 https://docs.openclaw.ai/providers/models.md
@@ -284,6 +297,7 @@ https://docs.openclaw.ai/providers/venice.md
 https://docs.openclaw.ai/providers/vercel-ai-gateway.md
 https://docs.openclaw.ai/providers/vllm.md
 https://docs.openclaw.ai/providers/volcengine.md
+https://docs.openclaw.ai/providers/vydra.md
 https://docs.openclaw.ai/providers/xai.md
 https://docs.openclaw.ai/providers/xiaomi.md
 https://docs.openclaw.ai/providers/zai.md
@@ -294,6 +308,7 @@ https://docs.openclaw.ai/reference/credits.md
 https://docs.openclaw.ai/reference/device-models.md
 https://docs.openclaw.ai/reference/memory-config.md
 https://docs.openclaw.ai/reference/prompt-caching.md
+https://docs.openclaw.ai/reference/rich-output-protocol.md
 https://docs.openclaw.ai/reference/rpc.md
 https://docs.openclaw.ai/reference/secretref-credential-surface.md
 https://docs.openclaw.ai/reference/session-management-compaction.md
@@ -352,6 +367,8 @@ https://docs.openclaw.ai/tools/kimi-search.md
 https://docs.openclaw.ai/tools/llm-task.md
 https://docs.openclaw.ai/tools/lobster.md
 https://docs.openclaw.ai/tools/loop-detection.md
+https://docs.openclaw.ai/tools/media-overview.md
+https://docs.openclaw.ai/tools/minimax-search.md
 https://docs.openclaw.ai/tools/multi-agent-sandbox-tools.md
 https://docs.openclaw.ai/tools/music-generation.md
 https://docs.openclaw.ai/tools/ollama-search.md

@@ -31,7 +31,7 @@
 ## `sync_section.py`
 **作用**
 - 按单个 section 同步文档。
-- 将对应链接写入 `urls/<section>.txt`。
+- 按 `docs/` 的本地镜像结构，将来源链接写入 `urls/` 下对应位置的 `.txt` 文件。
 - 下载到 `docs/`，并对疑似空/截断文档自动重试。
 - 通过底层共享同步逻辑显示 `tqdm` 进度条。
 
@@ -45,7 +45,8 @@
 ## `sync_selected_sections.py`
 **作用**
 - 按预设 sections 批量同步文档。
-- 将链接写入 `urls/selected_sections.txt`。
+- 将选中文档的聚合链接写入 `urls/selected_sections.txt`。
+- 同时按 `docs/` 的本地镜像结构，将每篇文档来源链接写入 `urls/` 下对应位置的 `.txt` 文件。
 - 下载到 `docs/`，并对疑似异常文档自动重试。
 - 通过底层共享同步逻辑显示 `tqdm` 进度条。
 
@@ -70,8 +71,9 @@
 - 基于 `llms.txt` 做全站完整性检查与修复。
 - 检查缺失文档。
 - 检查空文档或疑似截断文档。
-- 生成 `urls/all.txt`。
-- 按本地镜像规则写入文档：官网根级 Markdown 归档到 `docs/others/`，其余文档保持原 section 路径。
+- 生成全站聚合来源列表 `urls/all.txt`。
+- 同时重建与 `docs/` 镜像结构一致的 `urls/` 目录树，每篇文档对应一个来源 `.txt` 文件。
+- 按本地镜像规则写入文档：官网根级 Markdown，以及 `automation`、`debug`、`diagnostics`、`nodes`、`plugins`、`security`、`start`、`web` 这些顶级 section，归档到 `docs/others/`；其余文档保持原 section 路径。
 - 在检查和下载阶段通过共享逻辑显示 `tqdm` 进度条。
 
 **用法**
@@ -85,8 +87,8 @@
 ## `sync_common.py`
 **作用**
 - 同步脚本的共享模块。
-- 统一处理 `llms.txt` 读取、URL 提取、文档下载、空文档/截断检测、URL 列表写入等公共逻辑。
-- 统一处理官网相对路径到本地镜像路径的映射规则：官网根级 Markdown 映射到 `docs/others/`，其余路径仍落在 `docs/` 原 section 下。
+- 统一处理 `llms.txt` 读取、URL 提取、文档下载、空文档/截断检测、URL 列表写入、镜像化 `urls/` 来源记录写入等公共逻辑。
+- 统一处理官网相对路径到本地镜像路径的映射规则：官网根级 Markdown，以及 `automation`、`debug`、`diagnostics`、`nodes`、`plugins`、`security`、`start`、`web` 这些顶级 section，映射到 `docs/others/`；其余路径仍落在 `docs/` 原 section 下。
 - 在批量检查和下载时统一提供 `tqdm` 进度条。
 - 内部复用 `myutils/http_utils.py` 与 `myutils/markdown_utils.py`。
 

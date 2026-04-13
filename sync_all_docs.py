@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import argparse
 
-from sync_common import all_doc_urls, check_rels, rels_from_urls, sync_rels, write_url_list
+from sync_common import all_doc_urls, check_rels, rebuild_url_records, rels_from_urls, sync_rels, write_url_list
 
 
 def main() -> None:
@@ -16,6 +16,7 @@ def main() -> None:
     urls = all_doc_urls(timeout=args.timeout)
     rels = rels_from_urls(urls)
     write_url_list("all.txt", urls)
+    rebuild_url_records(rels)
 
     print(f"expected_docs={len(rels)}")
 
