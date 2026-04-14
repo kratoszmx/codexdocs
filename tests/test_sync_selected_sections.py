@@ -20,14 +20,16 @@ def test_sync_selected_sections_updates_index_and_mirrored_records(monkeypatch, 
     record_calls: list[list[str]] = []
     monkeypatch.setattr(sync_selected_sections, "write_url_records", lambda rels: record_calls.append(list(rels)))
 
-    sync_calls: list[tuple[list[str], int, bool]] = []
+    sync_calls: list[tuple[list[str], int, bool, int]] = []
     monkeypatch.setattr(
         sync_selected_sections,
         "sync_rels",
-        lambda rels, timeout, force_download: (sync_calls.append((list(rels), timeout, force_download)) or (3, [])),
+        lambda rels, timeout, force_download, max_workers: (
+            sync_calls.append((list(rels), timeout, force_download, max_workers)) or (3, [])
+        ),
     )
 
-    monkeypatch.setattr(sys, "argv", ["sync_selected_sections.py", "--timeout", "12"])
+    monkeypatch.setattr(sys, "argv", ["sync_selected_sections.py", "--timeout", "12", "--workers", "5"])
     sync_selected_sections.main()
 
     expected_rels = ["tools/browser.md", "install/docker.md", "gateway/index.md"]
@@ -36,7 +38,7 @@ def test_sync_selected_sections_updates_index_and_mirrored_records(monkeypatch, 
     out = capsys.readouterr().out
     assert index_calls == [("selected_sections.txt", expected_urls)]
     assert record_calls == [expected_rels]
-    assert sync_calls == [(expected_rels, 12, True)]
+    assert sync_calls == [(expected_rels, 12, True, 5)]
     assert "SYNCED 3 files" in out
     for section in SECTIONS:
         assert f"{section}:" in out

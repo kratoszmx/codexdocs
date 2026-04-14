@@ -71,3 +71,38 @@ def test_rebuild_url_records_removes_stale_flat_files_and_keeps_indexes(tmp_path
     assert (urls_dir / "others/automation/index.txt").read_text(encoding="utf-8") == "https://docs.openclaw.ai/automation/index.md\n"
     assert (urls_dir / "others/web/index.txt").read_text(encoding="utf-8") == "https://docs.openclaw.ai/web/index.md\n"
     assert not (urls_dir / "platforms").exists()
+
+
+def test_sync_rels_supports_parallel_workers(tmp_path, monkeypatch) -> None:
+    docs_root = tmp_path / "docs"
+    others_root = docs_root / "others"
+    urls_dir = tmp_path / "urls"
+    docs_root.mkdir()
+    others_root.mkdir(parents=True)
+    urls_dir.mkdir()
+
+    monkeypatch.setattr(sync_common, "DOCS_ROOT", docs_root)
+    monkeypatch.setattr(sync_common, "OTHERS_ROOT", others_root)
+    monkeypatch.setattr(sync_common, "URLS_DIR", urls_dir)
+
+    calls: list[tuple[str, int]] = []
+
+    def fake_download_rel(rel: str, timeout: int = 45):
+        calls.append((rel, timeout))
+        path = sync_common.doc_path(rel)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("# ok\n\nline1\nline2\nline3\n", encoding="utf-8")
+        return True, None
+
+    monkeypatch.setattr(sync_common, "download_rel", fake_download_rel)
+
+    downloaded, failures = sync_common.sync_rels(
+        ["index.md", "gateway/index.md"],
+        timeout=9,
+        force_download=True,
+        max_workers=2,
+    )
+
+    assert downloaded == 2
+    assert failures == []
+    assert sorted(calls) == [("gateway/index.md", 9), ("index.md", 9)]

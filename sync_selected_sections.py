@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import argparse
 
-from sync_common import all_doc_urls, filter_rels_by_prefixes, rels_from_urls, sync_rels, urls_from_rels, write_url_list, write_url_records
+from sync_common import DEFAULT_MAX_WORKERS, all_doc_urls, filter_rels_by_prefixes, rels_from_urls, sync_rels, urls_from_rels, write_url_list, write_url_records
 
 SECTIONS = ["install", "channels", "tools", "plugins", "platforms", "gateway", "reference", "help"]
 
@@ -11,13 +11,19 @@ SECTIONS = ["install", "channels", "tools", "plugins", "platforms", "gateway", "
 def main() -> None:
     parser = argparse.ArgumentParser(description="Sync selected docs.openclaw.ai sections")
     parser.add_argument("--timeout", type=int, default=45, help="HTTP timeout seconds (default: 45)")
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=DEFAULT_MAX_WORKERS,
+        help=f"Concurrent download workers (default: {DEFAULT_MAX_WORKERS})",
+    )
     args = parser.parse_args()
 
     rels = filter_rels_by_prefixes(rels_from_urls(all_doc_urls(timeout=args.timeout)), SECTIONS)
     write_url_list("selected_sections.txt", urls_from_rels(rels))
     write_url_records(rels)
 
-    downloaded, failures = sync_rels(rels, timeout=args.timeout, force_download=True)
+    downloaded, failures = sync_rels(rels, timeout=args.timeout, force_download=True, max_workers=args.workers)
     print(f"SYNCED {len(rels)} files")
     print(f"downloaded: {downloaded}")
     for section in SECTIONS:
@@ -26,7 +32,7 @@ def main() -> None:
     if failures:
         print("FAILURES:")
         for rel, msg in failures:
-            print(f"{rel}\t{msg}")
+            print(f"{rel}	{msg}")
 
 
 if __name__ == "__main__":

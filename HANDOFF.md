@@ -23,5 +23,5 @@
 
 ## 接手建议
 - 先读 `skills.txt`，再根据任务决定是否查看 `PY_FILES_SUMMARY.md`。
-- 需要确认镜像完整性时，先跑 `python3 sync_all_docs.py --check-only`。
+- 若只想诊断本地镜像是否缺失或疑似截断，可跑 `python3 sync_all_docs.py --check-only`；若要确保当前索引下的正文内容刷新，以 `python3 sync_all_docs.py --update-all` 为准。
 - 本文件只记录项目状态、当前关注点和交接信息；不要在这里重复写通用规则或脚本用法。

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from tqdm.auto import tqdm
@@ -16,6 +17,7 @@ OTHERS_ROOT = DOCS_ROOT / "others"
 URLS_DIR = ROOT / "urls"
 LLMS_URL = "https://docs.openclaw.ai/llms.txt"
 DOC_PREFIX = "https://docs.openclaw.ai/"
+DEFAULT_MAX_WORKERS = 6
 LOCAL_OTHERS_SECTIONS = frozenset({"automation", "debug", "diagnostics", "nodes", "plugins", "security", "start", "web"})
 
 
@@ -193,28 +195,59 @@ def download_rel(rel: str, timeout: int = 45) -> tuple[bool, str | None]:
     return True, None
 
 
-def sync_rels(rels: list[str], timeout: int = 45, force_download: bool = True) -> tuple[int, list[tuple[str, str]]]:
+def sync_rels(
+    rels: list[str],
+    timeout: int = 45,
+    force_download: bool = True,
+    max_workers: int = DEFAULT_MAX_WORKERS,
+) -> tuple[int, list[tuple[str, str]]]:
     ensure_dirs()
+    worker_count = max(1, int(max_workers))
     downloaded = 0
     failures: list[tuple[str, str]] = []
+    pending: list[str] = []
 
-    progress = tqdm(rels, desc="sync docs", unit="file")
-    for rel in progress:
-        path = doc_path(rel)
-        need_download = force_download or (not path.exists())
-        if not need_download:
-            text = path.read_text(encoding="utf-8", errors="ignore")
-            need_download = is_empty_or_truncated(text)
-        if not need_download:
-            progress.set_postfix(downloaded=downloaded, failures=len(failures), refresh=False)
-            continue
+    progress = tqdm(total=len(rels), desc="sync docs", unit="file")
+    try:
+        for rel in rels:
+            path = doc_path(rel)
+            need_download = force_download or (not path.exists())
+            if not need_download:
+                text = path.read_text(encoding="utf-8", errors="ignore")
+                need_download = is_empty_or_truncated(text)
+            if need_download:
+                pending.append(rel)
+            else:
+                progress.update(1)
+                progress.set_postfix(downloaded=downloaded, failures=len(failures), refresh=False)
 
-        ok, err = download_rel(rel, timeout=timeout)
-        if ok:
-            downloaded += 1
-        else:
-            failures.append((rel, err or "unknown"))
-        progress.set_postfix(downloaded=downloaded, failures=len(failures), refresh=False)
+        if worker_count == 1 or len(pending) <= 1:
+            for rel in pending:
+                ok, err = download_rel(rel, timeout=timeout)
+                if ok:
+                    downloaded += 1
+                else:
+                    failures.append((rel, err or "unknown"))
+                progress.update(1)
+                progress.set_postfix(downloaded=downloaded, failures=len(failures), refresh=False)
+            return downloaded, failures
+
+        with ThreadPoolExecutor(max_workers=min(worker_count, len(pending))) as executor:
+            future_to_rel = {executor.submit(download_rel, rel, timeout=timeout): rel for rel in pending}
+            for future in as_completed(future_to_rel):
+                rel = future_to_rel[future]
+                try:
+                    ok, err = future.result()
+                except Exception as exc:  # noqa: BLE001
+                    ok, err = False, f"worker:{exc}"
+                if ok:
+                    downloaded += 1
+                else:
+                    failures.append((rel, err or "unknown"))
+                progress.update(1)
+                progress.set_postfix(downloaded=downloaded, failures=len(failures), refresh=False)
+    finally:
+        progress.close()
 
     return downloaded, failures
 

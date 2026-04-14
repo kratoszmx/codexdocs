@@ -38,6 +38,7 @@
 **用法**
 - `python3 sync_section.py <section>`
 - `python3 sync_section.py <section> --timeout 45`
+- `python3 sync_section.py <section> --workers 6`
 - 示例：`python3 sync_section.py tools`
 
 ---
@@ -63,24 +64,27 @@
 **用法**
 - `python3 sync_selected_sections.py`
 - `python3 sync_selected_sections.py --timeout 45`
+- `python3 sync_selected_sections.py --workers 6`
 
 ---
 
 ## `sync_all_docs.py`
 **作用**
-- 基于 `llms.txt` 做全站完整性检查与修复。
+- 基于 `llms.txt` 做全站同步、完整性检查与修复。
 - 检查缺失文档。
 - 检查空文档或疑似截断文档。
 - 生成全站聚合来源列表 `urls/all.txt`。
 - 同时重建与 `docs/` 镜像结构一致的 `urls/` 目录树，每篇文档对应一个来源 `.txt` 文件。
 - 按本地镜像规则写入文档：官网根级 Markdown，以及 `automation`、`debug`、`diagnostics`、`nodes`、`plugins`、`security`、`start`、`web` 这些顶级 section，归档到 `docs/others/`；其余文档保持原 section 路径。
 - 在检查和下载阶段通过共享逻辑显示 `tqdm` 进度条。
+- 下载阶段支持有限并发 worker，并通过 `myutils/http_utils.py` 在可用时复用 HTTP 连接。
 
 **用法**
-- `python3 sync_all_docs.py --check-only`：仅检查
+- `python3 sync_all_docs.py --check-only`：仅检查本地镜像是否缺失/疑似截断（基于当前 `llms.txt` 索引，不验证线上正文是否已更新）
 - `python3 sync_all_docs.py`：修复缺失或异常文档
-- `python3 sync_all_docs.py --update-all`：强制重下全站文档
+- `python3 sync_all_docs.py --update-all`：强制重下当前索引中的全站文档，用于内容刷新
 - `python3 sync_all_docs.py --timeout 45`
+- `python3 sync_all_docs.py --workers 6`
 
 ---
 

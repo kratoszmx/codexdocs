@@ -31,18 +31,20 @@ def test_sync_all_docs_update_all(monkeypatch, capsys) -> None:
     ])
     monkeypatch.setattr(sync_all_docs, "write_url_list", lambda name, urls: None)
     monkeypatch.setattr(sync_all_docs, "rebuild_url_records", lambda rels: None)
-    sync_calls: list[tuple[list[str], int, bool]] = []
+    sync_calls: list[tuple[list[str], int, bool, int]] = []
     monkeypatch.setattr(
         sync_all_docs,
         "sync_rels",
-        lambda rels, timeout, force_download: (sync_calls.append((list(rels), timeout, force_download)) or (2, [])),
+        lambda rels, timeout, force_download, max_workers: (
+            sync_calls.append((list(rels), timeout, force_download, max_workers)) or (2, [])
+        ),
     )
     monkeypatch.setattr(sync_all_docs, "check_rels", lambda rels: ([], []))
 
-    monkeypatch.setattr(sys, "argv", ["sync_all_docs.py", "--update-all", "--timeout", "9"])
+    monkeypatch.setattr(sys, "argv", ["sync_all_docs.py", "--update-all", "--timeout", "9", "--workers", "7"])
     sync_all_docs.main()
 
     out = capsys.readouterr().out
     assert "downloaded=2" in out
     assert "postcheck_bad=0" in out
-    assert sync_calls == [(["index.md", "gateway/index.md"], 9, True)]
+    assert sync_calls == [(["index.md", "gateway/index.md"], 9, True, 7)]

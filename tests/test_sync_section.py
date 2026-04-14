@@ -13,18 +13,20 @@ def test_sync_section_writes_mirrored_url_records(monkeypatch, capsys) -> None:
     written: list[list[str]] = []
     monkeypatch.setattr(sync_section, "write_url_records", lambda rels: written.append(list(rels)))
 
-    sync_calls: list[tuple[list[str], int, bool]] = []
+    sync_calls: list[tuple[list[str], int, bool, int]] = []
     monkeypatch.setattr(
         sync_section,
         "sync_rels",
-        lambda rels, timeout, force_download: (sync_calls.append((list(rels), timeout, force_download)) or (2, [])),
+        lambda rels, timeout, force_download, max_workers: (
+            sync_calls.append((list(rels), timeout, force_download, max_workers)) or (2, [])
+        ),
     )
 
-    monkeypatch.setattr(sys, "argv", ["sync_section.py", "tools", "--timeout", "11"])
+    monkeypatch.setattr(sys, "argv", ["sync_section.py", "tools", "--timeout", "11", "--workers", "4"])
     sync_section.main()
 
     out = capsys.readouterr().out
     assert written == [["tools/browser.md", "tools/read.md"]]
-    assert sync_calls == [(["tools/browser.md", "tools/read.md"], 11, True)]
+    assert sync_calls == [(["tools/browser.md", "tools/read.md"], 11, True, 4)]
     assert "tools: 2" in out
     assert "downloaded: 2" in out
