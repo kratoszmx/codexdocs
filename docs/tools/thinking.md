@@ -81,6 +81,15 @@
 * Tool failure summaries remain visible in normal mode, but raw error detail suffixes are hidden unless verbose is `on` or `full`.
 * When verbose is `full`, tool outputs are also forwarded after completion (separate bubble, truncated to a safe length). If you toggle `/verbose on|full|off` while a run is in-flight, subsequent tool bubbles honor the new setting.
 
+## Plugin trace directives (/trace)
+
+* Levels: `on` | `off` (default).
+* Directive-only message toggles session plugin trace output and replies `Plugin trace enabled.` / `Plugin trace disabled.`.
+* Inline directive affects only that message; session/global defaults apply otherwise.
+* Send `/trace` (or `/trace:`) with no argument to see the current trace level.
+* `/trace` is narrower than `/verbose`: it only exposes plugin-owned trace/debug lines such as Active Memory debug summaries.
+* Trace lines can appear in `/status` and as a follow-up diagnostic message after the normal assistant reply.
+
 ## Reasoning visibility (/reasoning)
 
 * Levels: `on|off|stream`.

@@ -20,22 +20,44 @@ OpenClaw supports Mistral for both text/image model routing (`mistral/...`) and
 audio transcription via Voxtral in media understanding.
 Mistral can also be used for memory embeddings (`memorySearch.provider = "mistral"`).
 
-## CLI setup
+* Provider: `mistral`
+* Auth: `MISTRAL_API_KEY`
+* API: Mistral Chat Completions (`https://api.mistral.ai/v1`)
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
-openclaw onboard --auth-choice mistral-api-key
-# or non-interactive
-openclaw onboard --mistral-api-key "$MISTRAL_API_KEY"
-```
+## Getting started
 
-## Config snippet (LLM provider)
+<Steps>
+  <Step title="Get your API key">
+    Create an API key in the [Mistral Console](https://console.mistral.ai/).
+  </Step>
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
-{
-  env: { MISTRAL_API_KEY: "sk-..." },
-  agents: { defaults: { model: { primary: "mistral/mistral-large-latest" } } },
-}
-```
+  <Step title="Run onboarding">
+    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    openclaw onboard --auth-choice mistral-api-key
+    ```
+
+    Or pass the key directly:
+
+    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    openclaw onboard --mistral-api-key "$MISTRAL_API_KEY"
+    ```
+  </Step>
+
+  <Step title="Set a default model">
+    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    {
+      env: { MISTRAL_API_KEY: "sk-..." },
+      agents: { defaults: { model: { primary: "mistral/mistral-large-latest" } } },
+    }
+    ```
+  </Step>
+
+  <Step title="Verify the model is available">
+    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    openclaw models list --provider mistral
+    ```
+  </Step>
+</Steps>
 
 ## Built-in LLM catalog
 
@@ -51,7 +73,9 @@ OpenClaw currently ships this bundled Mistral catalog:
 | `mistral/devstral-medium-latest` | text        | 262,144 | 32,768     | Devstral 2                                                       |
 | `mistral/magistral-small`        | text        | 128,000 | 40,000     | Reasoning-enabled                                                |
 
-## Config snippet (audio transcription with Voxtral)
+## Audio transcription (Voxtral)
+
+Use Voxtral for audio transcription through the media understanding pipeline.
 
 ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
@@ -66,25 +90,57 @@ OpenClaw currently ships this bundled Mistral catalog:
 }
 ```
 
-## Adjustable reasoning (`mistral-small-latest`)
+<Tip>
+  The media transcription path uses `/v1/audio/transcriptions`. The default audio model for Mistral is `voxtral-mini-latest`.
+</Tip>
 
-`mistral/mistral-small-latest` maps to Mistral Small 4 and supports [adjustable reasoning](https://docs.mistral.ai/capabilities/reasoning/adjustable) on the Chat Completions API via `reasoning_effort` (`none` minimizes extra thinking in the output; `high` surfaces full thinking traces before the final answer).
+## Advanced configuration
 
-OpenClaw maps the session **thinking** level to Mistral’s API:
+<AccordionGroup>
+  <Accordion title="Adjustable reasoning (mistral-small-latest)">
+    `mistral/mistral-small-latest` maps to Mistral Small 4 and supports [adjustable reasoning](https://docs.mistral.ai/capabilities/reasoning/adjustable) on the Chat Completions API via `reasoning_effort` (`none` minimizes extra thinking in the output; `high` surfaces full thinking traces before the final answer).
 
-* **off** / **minimal** → `none`
-* **low** / **medium** / **high** / **xhigh** / **adaptive** → `high`
+    OpenClaw maps the session **thinking** level to Mistral's API:
 
-Other bundled Mistral catalog models do not use this parameter; keep using `magistral-*` models when you want Mistral’s native reasoning-first behavior.
+    | OpenClaw thinking level                                    | Mistral `reasoning_effort` |
+    | ---------------------------------------------------------- | -------------------------- |
+    | **off** / **minimal**                                      | `none`                     |
+    | **low** / **medium** / **high** / **xhigh** / **adaptive** | `high`                     |
 
-## Notes
+    <Note>
+      Other bundled Mistral catalog models do not use this parameter. Keep using `magistral-*` models when you want Mistral's native reasoning-first behavior.
+    </Note>
+  </Accordion>
 
-* Mistral auth uses `MISTRAL_API_KEY`.
-* Provider base URL defaults to `https://api.mistral.ai/v1`.
-* Onboarding default model is `mistral/mistral-large-latest`.
-* Media-understanding default audio model for Mistral is `voxtral-mini-latest`.
-* Media transcription path uses `/v1/audio/transcriptions`.
-* Memory embeddings path uses `/v1/embeddings` (default model: `mistral-embed`).
+  <Accordion title="Memory embeddings">
+    Mistral can serve memory embeddings via `/v1/embeddings` (default model: `mistral-embed`).
+
+    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    {
+      memorySearch: { provider: "mistral" },
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Auth and base URL">
+    * Mistral auth uses `MISTRAL_API_KEY`.
+    * Provider base URL defaults to `https://api.mistral.ai/v1`.
+    * Onboarding default model is `mistral/mistral-large-latest`.
+    * Z.AI uses Bearer auth with your API key.
+  </Accordion>
+</AccordionGroup>
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="Model selection" href="/concepts/model-providers" icon="layers">
+    Choosing providers, model refs, and failover behavior.
+  </Card>
+
+  <Card title="Media understanding" href="/tools/media-understanding" icon="microphone">
+    Audio transcription setup and provider selection.
+  </Card>
+</CardGroup>
 
 
 Built with [Mintlify](https://mintlify.com).

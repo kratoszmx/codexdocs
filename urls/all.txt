@@ -180,6 +180,7 @@ https://docs.openclaw.ai/install/exe-dev.md
 https://docs.openclaw.ai/install/fly.md
 https://docs.openclaw.ai/install/gcp.md
 https://docs.openclaw.ai/install/hetzner.md
+https://docs.openclaw.ai/install/hostinger.md
 https://docs.openclaw.ai/install/index.md
 https://docs.openclaw.ai/install/installer.md
 https://docs.openclaw.ai/install/kubernetes.md

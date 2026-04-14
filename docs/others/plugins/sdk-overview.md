@@ -180,63 +180,64 @@ explicitly promotes one as public.
   </Accordion>
 
   <Accordion title="Runtime and storage subpaths">
-    | Subpath                                   | Key exports                                                                                                                                   |
-    | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `plugin-sdk/runtime`                      | Broad runtime/logging/backup/plugin-install helpers                                                                                           |
-    | `plugin-sdk/runtime-env`                  | Narrow runtime env, logger, timeout, retry, and backoff helpers                                                                               |
-    | `plugin-sdk/channel-runtime-context`      | Generic channel runtime-context registration and lookup helpers                                                                               |
-    | `plugin-sdk/runtime-store`                | `createPluginRuntimeStore`                                                                                                                    |
-    | `plugin-sdk/plugin-runtime`               | Shared plugin command/hook/http/interactive helpers                                                                                           |
-    | `plugin-sdk/hook-runtime`                 | Shared webhook/internal hook pipeline helpers                                                                                                 |
-    | `plugin-sdk/lazy-runtime`                 | Lazy runtime import/binding helpers such as `createLazyRuntimeModule`, `createLazyRuntimeMethod`, and `createLazyRuntimeSurface`              |
-    | `plugin-sdk/process-runtime`              | Process exec helpers                                                                                                                          |
-    | `plugin-sdk/cli-runtime`                  | CLI formatting, wait, and version helpers                                                                                                     |
-    | `plugin-sdk/gateway-runtime`              | Gateway client and channel-status patch helpers                                                                                               |
-    | `plugin-sdk/config-runtime`               | Config load/write helpers                                                                                                                     |
-    | `plugin-sdk/telegram-command-config`      | Telegram command-name/description normalization and duplicate/conflict checks, even when the bundled Telegram contract surface is unavailable |
-    | `plugin-sdk/approval-runtime`             | Exec/plugin approval helpers, approval-capability builders, auth/profile helpers, native routing/runtime helpers                              |
-    | `plugin-sdk/reply-runtime`                | Shared inbound/reply runtime helpers, chunking, dispatch, heartbeat, reply planner                                                            |
-    | `plugin-sdk/reply-dispatch-runtime`       | Narrow reply dispatch/finalize helpers                                                                                                        |
-    | `plugin-sdk/reply-history`                | Shared short-window reply-history helpers such as `buildHistoryContext`, `recordPendingHistoryEntry`, and `clearHistoryEntriesIfEnabled`      |
-    | `plugin-sdk/reply-reference`              | `createReplyReferencePlanner`                                                                                                                 |
-    | `plugin-sdk/reply-chunking`               | Narrow text/markdown chunking helpers                                                                                                         |
-    | `plugin-sdk/session-store-runtime`        | Session store path + updated-at helpers                                                                                                       |
-    | `plugin-sdk/state-paths`                  | State/OAuth dir path helpers                                                                                                                  |
-    | `plugin-sdk/routing`                      | Route/session-key/account binding helpers such as `resolveAgentRoute`, `buildAgentSessionKey`, and `resolveDefaultAgentBoundAccountId`        |
-    | `plugin-sdk/status-helpers`               | Shared channel/account status summary helpers, runtime-state defaults, and issue metadata helpers                                             |
-    | `plugin-sdk/target-resolver-runtime`      | Shared target resolver helpers                                                                                                                |
-    | `plugin-sdk/string-normalization-runtime` | Slug/string normalization helpers                                                                                                             |
-    | `plugin-sdk/request-url`                  | Extract string URLs from fetch/request-like inputs                                                                                            |
-    | `plugin-sdk/run-command`                  | Timed command runner with normalized stdout/stderr results                                                                                    |
-    | `plugin-sdk/param-readers`                | Common tool/CLI param readers                                                                                                                 |
-    | `plugin-sdk/tool-payload`                 | Extract normalized payloads from tool result objects                                                                                          |
-    | `plugin-sdk/tool-send`                    | Extract canonical send target fields from tool args                                                                                           |
-    | `plugin-sdk/temp-path`                    | Shared temp-download path helpers                                                                                                             |
-    | `plugin-sdk/logging-core`                 | Subsystem logger and redaction helpers                                                                                                        |
-    | `plugin-sdk/markdown-table-runtime`       | Markdown table mode helpers                                                                                                                   |
-    | `plugin-sdk/json-store`                   | Small JSON state read/write helpers                                                                                                           |
-    | `plugin-sdk/file-lock`                    | Re-entrant file-lock helpers                                                                                                                  |
-    | `plugin-sdk/persistent-dedupe`            | Disk-backed dedupe cache helpers                                                                                                              |
-    | `plugin-sdk/acp-runtime`                  | ACP runtime/session and reply-dispatch helpers                                                                                                |
-    | `plugin-sdk/agent-config-primitives`      | Narrow agent runtime config-schema primitives                                                                                                 |
-    | `plugin-sdk/boolean-param`                | Loose boolean param reader                                                                                                                    |
-    | `plugin-sdk/dangerous-name-runtime`       | Dangerous-name matching resolution helpers                                                                                                    |
-    | `plugin-sdk/device-bootstrap`             | Device bootstrap and pairing token helpers                                                                                                    |
-    | `plugin-sdk/extension-shared`             | Shared passive-channel, status, and ambient proxy helper primitives                                                                           |
-    | `plugin-sdk/models-provider-runtime`      | `/models` command/provider reply helpers                                                                                                      |
-    | `plugin-sdk/skill-commands-runtime`       | Skill command listing helpers                                                                                                                 |
-    | `plugin-sdk/native-command-registry`      | Native command registry/build/serialize helpers                                                                                               |
-    | `plugin-sdk/provider-zai-endpoint`        | Z.AI endpoint detection helpers                                                                                                               |
-    | `plugin-sdk/infra-runtime`                | System event/heartbeat helpers                                                                                                                |
-    | `plugin-sdk/collection-runtime`           | Small bounded cache helpers                                                                                                                   |
-    | `plugin-sdk/diagnostic-runtime`           | Diagnostic flag and event helpers                                                                                                             |
-    | `plugin-sdk/error-runtime`                | Error graph, formatting, shared error classification helpers, `isApprovalNotFoundError`                                                       |
-    | `plugin-sdk/fetch-runtime`                | Wrapped fetch, proxy, and pinned lookup helpers                                                                                               |
-    | `plugin-sdk/host-runtime`                 | Hostname and SCP host normalization helpers                                                                                                   |
-    | `plugin-sdk/retry-runtime`                | Retry config and retry runner helpers                                                                                                         |
-    | `plugin-sdk/agent-runtime`                | Agent dir/identity/workspace helpers                                                                                                          |
-    | `plugin-sdk/directory-runtime`            | Config-backed directory query/dedup                                                                                                           |
-    | `plugin-sdk/keyed-async-queue`            | `KeyedAsyncQueue`                                                                                                                             |
+    | Subpath                                   | Key exports                                                                                                                                                                  |
+    | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `plugin-sdk/runtime`                      | Broad runtime/logging/backup/plugin-install helpers                                                                                                                          |
+    | `plugin-sdk/runtime-env`                  | Narrow runtime env, logger, timeout, retry, and backoff helpers                                                                                                              |
+    | `plugin-sdk/channel-runtime-context`      | Generic channel runtime-context registration and lookup helpers                                                                                                              |
+    | `plugin-sdk/runtime-store`                | `createPluginRuntimeStore`                                                                                                                                                   |
+    | `plugin-sdk/plugin-runtime`               | Shared plugin command/hook/http/interactive helpers                                                                                                                          |
+    | `plugin-sdk/hook-runtime`                 | Shared webhook/internal hook pipeline helpers                                                                                                                                |
+    | `plugin-sdk/lazy-runtime`                 | Lazy runtime import/binding helpers such as `createLazyRuntimeModule`, `createLazyRuntimeMethod`, and `createLazyRuntimeSurface`                                             |
+    | `plugin-sdk/process-runtime`              | Process exec helpers                                                                                                                                                         |
+    | `plugin-sdk/cli-runtime`                  | CLI formatting, wait, and version helpers                                                                                                                                    |
+    | `plugin-sdk/gateway-runtime`              | Gateway client and channel-status patch helpers                                                                                                                              |
+    | `plugin-sdk/config-runtime`               | Config load/write helpers                                                                                                                                                    |
+    | `plugin-sdk/telegram-command-config`      | Telegram command-name/description normalization and duplicate/conflict checks, even when the bundled Telegram contract surface is unavailable                                |
+    | `plugin-sdk/approval-runtime`             | Exec/plugin approval helpers, approval-capability builders, auth/profile helpers, native routing/runtime helpers                                                             |
+    | `plugin-sdk/reply-runtime`                | Shared inbound/reply runtime helpers, chunking, dispatch, heartbeat, reply planner                                                                                           |
+    | `plugin-sdk/reply-dispatch-runtime`       | Narrow reply dispatch/finalize helpers                                                                                                                                       |
+    | `plugin-sdk/reply-history`                | Shared short-window reply-history helpers such as `buildHistoryContext`, `recordPendingHistoryEntry`, and `clearHistoryEntriesIfEnabled`                                     |
+    | `plugin-sdk/reply-reference`              | `createReplyReferencePlanner`                                                                                                                                                |
+    | `plugin-sdk/reply-chunking`               | Narrow text/markdown chunking helpers                                                                                                                                        |
+    | `plugin-sdk/session-store-runtime`        | Session store path + updated-at helpers                                                                                                                                      |
+    | `plugin-sdk/state-paths`                  | State/OAuth dir path helpers                                                                                                                                                 |
+    | `plugin-sdk/routing`                      | Route/session-key/account binding helpers such as `resolveAgentRoute`, `buildAgentSessionKey`, and `resolveDefaultAgentBoundAccountId`                                       |
+    | `plugin-sdk/status-helpers`               | Shared channel/account status summary helpers, runtime-state defaults, and issue metadata helpers                                                                            |
+    | `plugin-sdk/target-resolver-runtime`      | Shared target resolver helpers                                                                                                                                               |
+    | `plugin-sdk/string-normalization-runtime` | Slug/string normalization helpers                                                                                                                                            |
+    | `plugin-sdk/request-url`                  | Extract string URLs from fetch/request-like inputs                                                                                                                           |
+    | `plugin-sdk/run-command`                  | Timed command runner with normalized stdout/stderr results                                                                                                                   |
+    | `plugin-sdk/param-readers`                | Common tool/CLI param readers                                                                                                                                                |
+    | `plugin-sdk/tool-payload`                 | Extract normalized payloads from tool result objects                                                                                                                         |
+    | `plugin-sdk/tool-send`                    | Extract canonical send target fields from tool args                                                                                                                          |
+    | `plugin-sdk/temp-path`                    | Shared temp-download path helpers                                                                                                                                            |
+    | `plugin-sdk/logging-core`                 | Subsystem logger and redaction helpers                                                                                                                                       |
+    | `plugin-sdk/markdown-table-runtime`       | Markdown table mode helpers                                                                                                                                                  |
+    | `plugin-sdk/json-store`                   | Small JSON state read/write helpers                                                                                                                                          |
+    | `plugin-sdk/file-lock`                    | Re-entrant file-lock helpers                                                                                                                                                 |
+    | `plugin-sdk/persistent-dedupe`            | Disk-backed dedupe cache helpers                                                                                                                                             |
+    | `plugin-sdk/acp-runtime`                  | ACP runtime/session and reply-dispatch helpers                                                                                                                               |
+    | `plugin-sdk/agent-config-primitives`      | Narrow agent runtime config-schema primitives                                                                                                                                |
+    | `plugin-sdk/boolean-param`                | Loose boolean param reader                                                                                                                                                   |
+    | `plugin-sdk/dangerous-name-runtime`       | Dangerous-name matching resolution helpers                                                                                                                                   |
+    | `plugin-sdk/device-bootstrap`             | Device bootstrap and pairing token helpers                                                                                                                                   |
+    | `plugin-sdk/extension-shared`             | Shared passive-channel, status, and ambient proxy helper primitives                                                                                                          |
+    | `plugin-sdk/models-provider-runtime`      | `/models` command/provider reply helpers                                                                                                                                     |
+    | `plugin-sdk/skill-commands-runtime`       | Skill command listing helpers                                                                                                                                                |
+    | `plugin-sdk/native-command-registry`      | Native command registry/build/serialize helpers                                                                                                                              |
+    | `plugin-sdk/agent-harness`                | Experimental trusted-plugin surface for low-level agent harnesses: harness types, active-run steer/abort helpers, OpenClaw tool bridge helpers, and attempt result utilities |
+    | `plugin-sdk/provider-zai-endpoint`        | Z.AI endpoint detection helpers                                                                                                                                              |
+    | `plugin-sdk/infra-runtime`                | System event/heartbeat helpers                                                                                                                                               |
+    | `plugin-sdk/collection-runtime`           | Small bounded cache helpers                                                                                                                                                  |
+    | `plugin-sdk/diagnostic-runtime`           | Diagnostic flag and event helpers                                                                                                                                            |
+    | `plugin-sdk/error-runtime`                | Error graph, formatting, shared error classification helpers, `isApprovalNotFoundError`                                                                                      |
+    | `plugin-sdk/fetch-runtime`                | Wrapped fetch, proxy, and pinned lookup helpers                                                                                                                              |
+    | `plugin-sdk/host-runtime`                 | Hostname and SCP host normalization helpers                                                                                                                                  |
+    | `plugin-sdk/retry-runtime`                | Retry config and retry runner helpers                                                                                                                                        |
+    | `plugin-sdk/agent-runtime`                | Agent dir/identity/workspace helpers                                                                                                                                         |
+    | `plugin-sdk/directory-runtime`            | Config-backed directory query/dedup                                                                                                                                          |
+    | `plugin-sdk/keyed-async-queue`            | `KeyedAsyncQueue`                                                                                                                                                            |
   </Accordion>
 
   <Accordion title="Capability and testing subpaths">
@@ -309,20 +310,21 @@ methods:
 
 ### Capability registration
 
-| Method                                           | What it registers                |
-| ------------------------------------------------ | -------------------------------- |
-| `api.registerProvider(...)`                      | Text inference (LLM)             |
-| `api.registerCliBackend(...)`                    | Local CLI inference backend      |
-| `api.registerChannel(...)`                       | Messaging channel                |
-| `api.registerSpeechProvider(...)`                | Text-to-speech / STT synthesis   |
-| `api.registerRealtimeTranscriptionProvider(...)` | Streaming realtime transcription |
-| `api.registerRealtimeVoiceProvider(...)`         | Duplex realtime voice sessions   |
-| `api.registerMediaUnderstandingProvider(...)`    | Image/audio/video analysis       |
-| `api.registerImageGenerationProvider(...)`       | Image generation                 |
-| `api.registerMusicGenerationProvider(...)`       | Music generation                 |
-| `api.registerVideoGenerationProvider(...)`       | Video generation                 |
-| `api.registerWebFetchProvider(...)`              | Web fetch / scrape provider      |
-| `api.registerWebSearchProvider(...)`             | Web search                       |
+| Method                                           | What it registers                     |
+| ------------------------------------------------ | ------------------------------------- |
+| `api.registerProvider(...)`                      | Text inference (LLM)                  |
+| `api.registerAgentHarness(...)`                  | Experimental low-level agent executor |
+| `api.registerCliBackend(...)`                    | Local CLI inference backend           |
+| `api.registerChannel(...)`                       | Messaging channel                     |
+| `api.registerSpeechProvider(...)`                | Text-to-speech / STT synthesis        |
+| `api.registerRealtimeTranscriptionProvider(...)` | Streaming realtime transcription      |
+| `api.registerRealtimeVoiceProvider(...)`         | Duplex realtime voice sessions        |
+| `api.registerMediaUnderstandingProvider(...)`    | Image/audio/video analysis            |
+| `api.registerImageGenerationProvider(...)`       | Image generation                      |
+| `api.registerMusicGenerationProvider(...)`       | Music generation                      |
+| `api.registerVideoGenerationProvider(...)`       | Video generation                      |
+| `api.registerWebFetchProvider(...)`              | Web fetch / scrape provider           |
+| `api.registerWebSearchProvider(...)`             | Web search                            |
 
 ### Tools and commands
 

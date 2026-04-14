@@ -22,7 +22,7 @@
   If you need mixed-trust or adversarial-user operation, split trust boundaries (separate gateway + credentials, ideally separate OS users/hosts).
 </Warning>
 
-**On this page:** [Trust model](#scope-first-personal-assistant-security-model) | [Quick audit](#quick-check-openclaw-security-audit) | [Hardened baseline](#hardened-baseline-in-60-seconds) | [DM access model](#dm-access-model-pairing--allowlist--open--disabled) | [Configuration hardening](#configuration-hardening-examples) | [Incident response](#incident-response)
+**On this page:** [Trust model](#scope-first-personal-assistant-security-model) | [Quick audit](#quick-check-openclaw-security-audit) | [Hardened baseline](#hardened-baseline-in-60-seconds) | [DM access model](#dm-access-model-pairing-allowlist-open-disabled) | [Configuration hardening](#configuration-hardening-examples) | [Incident response](#incident-response)
 
 ## Scope first: personal assistant security model
 
@@ -196,7 +196,7 @@ Allowlists gate triggers and command authorization. The `contextVisibility` sett
 * `contextVisibility: "allowlist"` filters supplemental context to senders allowed by the active allowlist checks.
 * `contextVisibility: "allowlist_quote"` behaves like `allowlist`, but still keeps one explicit quoted reply.
 
-Set `contextVisibility` per channel or per room/conversation. See [Group Chats](/channels/groups#context-visibility) for setup details.
+Set `contextVisibility` per channel or per room/conversation. See [Group Chats](/channels/groups#context-visibility-and-allowlists) for setup details.
 
 Advisory triage guidance:
 
@@ -588,6 +588,8 @@ Plugins run **in-process** with the Gateway. Treat them as trusted code:
 
 Details: [Plugins](/tools/plugin)
 
+<a id="dm-access-model-pairing-allowlist-open-disabled" />
+
 ## DM access model (pairing / allowlist / open / disabled)
 
 All current DM-capable channels support a DM policy (`dmPolicy` or `*.dm.policy`) that gates inbound DMs **before** the message is processed:
@@ -737,15 +739,16 @@ Recommendations:
 
 ## Reasoning & verbose output in groups
 
-`/reasoning` and `/verbose` can expose internal reasoning or tool output that
+`/reasoning`, `/verbose`, and `/trace` can expose internal reasoning, tool
+output, or plugin diagnostics that
 was not meant for a public channel. In group settings, treat them as **debug
 only** and keep them off unless you explicitly need them.
 
 Guidance:
 
-* Keep `/reasoning` and `/verbose` disabled in public rooms.
+* Keep `/reasoning`, `/verbose`, and `/trace` disabled in public rooms.
 * If you enable them, do so only in trusted DMs or tightly controlled rooms.
-* Remember: verbose output can include tool args, URLs, and data the model saw.
+* Remember: verbose and trace output can include tool args, URLs, plugin diagnostics, and data the model saw.
 
 ## Configuration Hardening (examples)
 
