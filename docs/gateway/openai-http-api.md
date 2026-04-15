@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # OpenAI Chat Completions
 
 # OpenAI Chat Completions (HTTP)
@@ -109,7 +99,7 @@ Compatibility aliases still accepted:
 
 Set `gateway.http.endpoints.chatCompletions.enabled` to `true`:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   gateway: {
     http: {
@@ -125,7 +115,7 @@ Set `gateway.http.endpoints.chatCompletions.enabled` to `true`:
 
 Set `gateway.http.endpoints.chatCompletions.enabled` to `false`:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   gateway: {
     http: {
@@ -218,7 +208,7 @@ Expected behavior:
 
 Quick smoke:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 curl -sS http://127.0.0.1:18789/v1/models \
   -H 'Authorization: Bearer YOUR_TOKEN'
 ```
@@ -229,7 +219,7 @@ If that returns `openclaw/default`, most Open WebUI setups can connect with the 
 
 Non-streaming:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 curl -sS http://127.0.0.1:18789/v1/chat/completions \
   -H 'Authorization: Bearer YOUR_TOKEN' \
   -H 'Content-Type: application/json' \
@@ -241,7 +231,7 @@ curl -sS http://127.0.0.1:18789/v1/chat/completions \
 
 Streaming:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 curl -N http://127.0.0.1:18789/v1/chat/completions \
   -H 'Authorization: Bearer YOUR_TOKEN' \
   -H 'Content-Type: application/json' \
@@ -255,21 +245,21 @@ curl -N http://127.0.0.1:18789/v1/chat/completions \
 
 List models:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 curl -sS http://127.0.0.1:18789/v1/models \
   -H 'Authorization: Bearer YOUR_TOKEN'
 ```
 
 Fetch one model:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 curl -sS http://127.0.0.1:18789/v1/models/openclaw%2Fdefault \
   -H 'Authorization: Bearer YOUR_TOKEN'
 ```
 
 Create embeddings:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 curl -sS http://127.0.0.1:18789/v1/embeddings \
   -H 'Authorization: Bearer YOUR_TOKEN' \
   -H 'Content-Type: application/json' \
@@ -286,6 +276,3 @@ Notes:
 * `openclaw/default` is always present so one stable id works across environments.
 * Backend provider/model overrides belong in `x-openclaw-model`, not the OpenAI `model` field.
 * `/v1/embeddings` supports `input` as a string or array of strings.
-
-
-Built with [Mintlify](https://mintlify.com).

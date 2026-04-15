@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Exec Tool
 
 # Exec tool
@@ -84,7 +74,7 @@ Notes:
 
 Example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   tools: {
     exec: {
@@ -109,7 +99,7 @@ Example:
 
 Per-agent node binding (use the agent list index in config):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw config get agents.list
 openclaw config set agents.list[0].tools.exec.node "node-id-or-name"
 ```
@@ -179,13 +169,13 @@ For full policy details and examples, see [Exec approvals](/tools/exec-approvals
 
 Foreground:
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 { "tool": "exec", "command": "ls -la" }
 ```
 
 Background + poll:
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {"tool":"exec","command":"npm run build","yieldMs":1000}
 {"tool":"process","action":"poll","sessionId":"<id>"}
 ```
@@ -195,7 +185,7 @@ is enabled, the command can wake the session when it emits output or fails.
 
 Send keys (tmux-style):
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {"tool":"process","action":"send-keys","sessionId":"<id>","keys":["Enter"]}
 {"tool":"process","action":"send-keys","sessionId":"<id>","keys":["C-c"]}
 {"tool":"process","action":"send-keys","sessionId":"<id>","keys":["Up","Up","Enter"]}
@@ -203,13 +193,13 @@ Send keys (tmux-style):
 
 Submit (send CR only):
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 { "tool": "process", "action": "submit", "sessionId": "<id>" }
 ```
 
 Paste (bracketed by default):
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 { "tool": "process", "action": "paste", "sessionId": "<id>", "text": "line1\nline2\n" }
 ```
 
@@ -219,7 +209,7 @@ Paste (bracketed by default):
 It is enabled by default for OpenAI and OpenAI Codex models. Use config only
 when you want to disable it or restrict it to specific models:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   tools: {
     exec: {
@@ -243,6 +233,3 @@ Notes:
 * [Sandboxing](/gateway/sandboxing) — running commands in sandboxed environments
 * [Background Process](/gateway/background-process) — long-running exec and process tool
 * [Security](/gateway/security) — tool policy and elevated access
-
-
-Built with [Mintlify](https://mintlify.com).

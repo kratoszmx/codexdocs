@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Uninstall
 
 # Uninstall
@@ -25,13 +15,13 @@ Two paths:
 
 Recommended: use the built-in uninstaller:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw uninstall
 ```
 
 Non-interactive (automation / npx):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw uninstall --all --yes --non-interactive
 npx -y openclaw uninstall --all --yes --non-interactive
 ```
@@ -40,19 +30,19 @@ Manual steps (same result):
 
 1. Stop the gateway service:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw gateway stop
 ```
 
 2. Uninstall the gateway service (launchd/systemd/schtasks):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw gateway uninstall
 ```
 
 3. Delete state + config:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 rm -rf "${OPENCLAW_STATE_DIR:-$HOME/.openclaw}"
 ```
 
@@ -60,13 +50,13 @@ If you set `OPENCLAW_CONFIG_PATH` to a custom location outside the state dir, de
 
 4. Delete your workspace (optional, removes agent files):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 rm -rf ~/.openclaw/workspace
 ```
 
 5. Remove the CLI install (pick the one you used):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 npm rm -g openclaw
 pnpm remove -g openclaw
 bun remove -g openclaw
@@ -74,7 +64,7 @@ bun remove -g openclaw
 
 6. If you installed the macOS app:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 rm -rf /Applications/OpenClaw.app
 ```
 
@@ -91,7 +81,7 @@ Use this if the gateway service keeps running but `openclaw` is missing.
 
 Default label is `ai.openclaw.gateway` (or `ai.openclaw.<profile>`; legacy `com.openclaw.*` may still exist):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 launchctl bootout gui/$UID/ai.openclaw.gateway
 rm -f ~/Library/LaunchAgents/ai.openclaw.gateway.plist
 ```
@@ -102,7 +92,7 @@ If you used a profile, replace the label and plist name with `ai.openclaw.<profi
 
 Default unit name is `openclaw-gateway.service` (or `openclaw-gateway-<profile>.service`):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 systemctl --user disable --now openclaw-gateway.service
 rm -f ~/.config/systemd/user/openclaw-gateway.service
 systemctl --user daemon-reload
@@ -113,7 +103,7 @@ systemctl --user daemon-reload
 Default task name is `OpenClaw Gateway` (or `OpenClaw Gateway (<profile>)`).
 The task script lives under your state dir.
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 schtasks /Delete /F /TN "OpenClaw Gateway"
 Remove-Item -Force "$env:USERPROFILE\.openclaw\gateway.cmd"
 ```
@@ -134,6 +124,3 @@ If you run from a repo checkout (`git clone` + `openclaw ...` / `bun run opencla
 1. Uninstall the gateway service **before** deleting the repo (use the easy path above or manual service removal).
 2. Delete the repo directory.
 3. Remove state + workspace as shown above.
-
-
-Built with [Mintlify](https://mintlify.com).

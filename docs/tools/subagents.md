@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Sub-Agents
 
 # Sub-agents
@@ -166,7 +156,7 @@ By default, sub-agents cannot spawn their own sub-agents (`maxSpawnDepth: 1`). Y
 
 ### How to enable
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   agents: {
     defaults: {
@@ -304,7 +294,7 @@ When `maxSpawnDepth >= 2`, depth-1 orchestrator sub-agents additionally receive 
 
 Override via config:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   agents: {
     defaults: {
@@ -346,6 +336,3 @@ Sub-agents use a dedicated in-process queue lane:
 * Sub-agent context only injects `AGENTS.md` + `TOOLS.md` (no `SOUL.md`, `IDENTITY.md`, `USER.md`, `HEARTBEAT.md`, or `BOOTSTRAP.md`).
 * Maximum nesting depth is 5 (`maxSpawnDepth` range: 1–5). Depth 2 is recommended for most use cases.
 * `maxChildrenPerAgent` caps active children per session (default: 5, range: 1–20).
-
-
-Built with [Mintlify](https://mintlify.com).

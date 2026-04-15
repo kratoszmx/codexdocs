@@ -78,6 +78,7 @@
 - 按本地镜像规则写入文档：官网根级 Markdown，以及 `automation`、`debug`、`diagnostics`、`nodes`、`plugins`、`security`、`start`、`web` 这些顶级 section，归档到 `docs/others/`；其余文档保持原 section 路径。
 - 在检查和下载阶段通过共享逻辑显示 `tqdm` 进度条。
 - 下载阶段支持有限并发 worker，并通过 `myutils/http_utils.py` 在可用时复用 HTTP 连接。
+- `--benchmark` 可打印索引抓取、元数据重建、下载、post-check 与总耗时，以及下载吞吐。
 
 **用法**
 - `python3 sync_all_docs.py --check-only`：仅检查本地镜像是否缺失/疑似截断（基于当前 `llms.txt` 索引，不验证线上正文是否已更新）
@@ -85,6 +86,7 @@
 - `python3 sync_all_docs.py --update-all`：强制重下当前索引中的全站文档，用于内容刷新
 - `python3 sync_all_docs.py --timeout 45`
 - `python3 sync_all_docs.py --workers 6`
+- `python3 sync_all_docs.py --update-all --benchmark`
 
 ---
 

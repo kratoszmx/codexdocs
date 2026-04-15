@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Security
 
 # Security
@@ -41,7 +31,7 @@ See also: [Formal Verification (Security Models)](/security/formal-verification)
 
 Run this regularly (especially after changing config or exposing network surfaces):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw security audit
 openclaw security audit --deep
 openclaw security audit --fix
@@ -149,7 +139,7 @@ Before opening a GHSA, verify all of these:
 
 Use this baseline first, then selectively re-enable tools per trusted agent:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   gateway: {
     mode: "local",
@@ -433,7 +423,7 @@ When the Gateway detects proxy headers from an address that is **not** in `trust
 * same-host loopback reverse proxies can still use `gateway.trustedProxies` for local-client detection and forwarded IP handling
 * for same-host loopback reverse proxies, use token/password auth instead of `gateway.auth.mode: "trusted-proxy"`
 
-```yaml  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```yaml theme={"theme":{"light":"min-light","dark":"min-dark"}}
 gateway:
   trustedProxies:
     - "10.0.0.1" # reverse proxy IP
@@ -449,14 +439,14 @@ When `trustedProxies` is configured, the Gateway uses `X-Forwarded-For` to deter
 
 Good reverse proxy behavior (overwrite incoming forwarding headers):
 
-```nginx  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```nginx theme={"theme":{"light":"min-light","dark":"min-dark"}}
 proxy_set_header X-Forwarded-For $remote_addr;
 proxy_set_header X-Real-IP $remote_addr;
 ```
 
 Bad reverse proxy behavior (append/preserve untrusted forwarding headers):
 
-```nginx  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```nginx theme={"theme":{"light":"min-light","dark":"min-dark"}}
 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 ```
 
@@ -560,7 +550,7 @@ normalized to the same protected exec paths before the write.
 
 For any agent/surface that handles untrusted content, deny these by default:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   tools: {
     deny: ["gateway", "cron", "sessions_spawn", "sessions_send"],
@@ -601,7 +591,7 @@ All current DM-capable channels support a DM policy (`dmPolicy` or `*.dm.policy`
 
 Approve via CLI:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw pairing list <channel>
 openclaw pairing approve <channel> <code>
 ```
@@ -612,7 +602,7 @@ Details + files on disk: [Pairing](/channels/pairing)
 
 By default, OpenClaw routes **all DMs into the main session** so your assistant has continuity across devices and channels. If **multiple people** can DM the bot (open DMs or a multi-person allowlist), consider isolating DM sessions:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   session: { dmScope: "per-channel-peer" },
 }
@@ -802,7 +792,7 @@ and still apply these rules to the nftables backend.
 
 Minimal allowlist example (IPv4):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 # /etc/ufw/after.rules (append as its own *filter section)
 *filter
 :DOCKER-USER - [0:0]
@@ -828,7 +818,7 @@ skip your deny rule.
 
 Quick validation after reload:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 ufw reload
 iptables -S DOCKER-USER
 ip6tables -S DOCKER-USER
@@ -852,7 +842,7 @@ The Gateway broadcasts its presence via mDNS (`_openclaw-gw._tcp` on port 5353) 
 
 1. **Minimal mode** (default, recommended for exposed gateways): omit sensitive fields from mDNS broadcasts:
 
-   ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+   ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
    {
      discovery: {
        mdns: { mode: "minimal" },
@@ -862,7 +852,7 @@ The Gateway broadcasts its presence via mDNS (`_openclaw-gw._tcp` on port 5353) 
 
 2. **Disable entirely** if you don't need local device discovery:
 
-   ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+   ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
    {
      discovery: {
        mdns: { mode: "off" },
@@ -872,7 +862,7 @@ The Gateway broadcasts its presence via mDNS (`_openclaw-gw._tcp` on port 5353) 
 
 3. **Full mode** (opt-in): include `cliPath` + `sshPort` in TXT records:
 
-   ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+   ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
    {
      discovery: {
        mdns: { mode: "full" },
@@ -894,7 +884,7 @@ local clients must authenticate.
 
 Set a token so **all** WS clients must authenticate:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   gateway: {
     auth: { mode: "token", token: "your-token" },
@@ -1036,7 +1026,7 @@ Details: [Logging](/gateway/logging)
 
 ### 1) DMs: pairing by default
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: { whatsapp: { dmPolicy: "pairing" } },
 }
@@ -1044,7 +1034,7 @@ Details: [Logging](/gateway/logging)
 
 ### 2) Groups: require mention everywhere
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "channels": {
     "whatsapp": {
@@ -1090,7 +1080,7 @@ Additional hardening options:
 
 One “safe default” config that keeps the Gateway private, requires DM pairing, and avoids always-on group bots:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   gateway: {
     mode: "local",
@@ -1173,7 +1163,7 @@ OpenClaw’s browser navigation policy is strict by default: private/internal de
 
 Example strict policy:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   browser: {
     ssrfPolicy: {
@@ -1200,7 +1190,7 @@ Common use cases:
 
 ### Example: full access (no sandbox)
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   agents: {
     list: [
@@ -1216,7 +1206,7 @@ Common use cases:
 
 ### Example: read-only tools + read-only workspace
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   agents: {
     list: [
@@ -1240,7 +1230,7 @@ Common use cases:
 
 ### Example: no filesystem/shell access (provider messaging allowed)
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   agents: {
     list: [
@@ -1343,7 +1333,7 @@ otherwise. If it fails, there are new candidates not yet in the baseline.
 
 1. Reproduce locally:
 
-   ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+   ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
    pre-commit run --all-files detect-secrets
    ```
 
@@ -1357,7 +1347,7 @@ otherwise. If it fails, there are new candidates not yet in the baseline.
 
 4. For false positives: run the interactive audit and mark them as false:
 
-   ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+   ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
    detect-secrets audit .secrets.baseline
    ```
 
@@ -1374,6 +1364,3 @@ Found a vulnerability in OpenClaw? Please report responsibly:
 1. Email: [security@openclaw.ai](mailto:security@openclaw.ai)
 2. Don't post publicly until fixed
 3. We'll credit you (unless you prefer anonymity)
-
-
-Built with [Mintlify](https://mintlify.com).

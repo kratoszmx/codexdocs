@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Builtin Memory Engine
 
 # Builtin Memory Engine
@@ -34,7 +24,7 @@ engine auto-detects it and enables vector search. No config needed.
 
 To set a provider explicitly:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   agents: {
     defaults: {
@@ -111,6 +101,3 @@ For embedding provider setup, hybrid search tuning (weights, MMR, temporal
 decay), batch indexing, multimodal memory, sqlite-vec, extra paths, and all
 other config knobs, see the
 [Memory configuration reference](/reference/memory-config).
-
-
-Built with [Mintlify](https://mintlify.com).

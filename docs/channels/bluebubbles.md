@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # BlueBubbles
 
 # BlueBubbles (macOS REST)
@@ -42,7 +32,7 @@ need a separate `openclaw plugins install` step.
 
 3. Run `openclaw onboard` and select BlueBubbles, or configure manually:
 
-   ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+   ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
    {
      channels: {
        bluebubbles: {
@@ -77,7 +67,7 @@ Save this as:
 
 Example script (non-interactive; does not steal focus):
 
-```applescript  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```applescript theme={"theme":{"light":"min-light","dark":"min-dark"}}
 try
   tell application "Messages"
     if not running then
@@ -98,7 +88,7 @@ Save this as:
 
 * `~/Library/LaunchAgents/com.user.poke-messages.plist`
 
-```xml  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```xml theme={"theme":{"light":"min-light","dark":"min-dark"}}
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -134,7 +124,7 @@ Notes:
 
 Load it:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 launchctl unload ~/Library/LaunchAgents/com.user.poke-messages.plist 2>/dev/null || true
 launchctl load ~/Library/LaunchAgents/com.user.poke-messages.plist
 ```
@@ -186,7 +176,7 @@ BlueBubbles group webhooks often only include raw participant addresses. If you 
 * Only unnamed phone participants are enriched.
 * Raw phone numbers remain as the fallback when no local match is found.
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     bluebubbles: {
@@ -206,7 +196,7 @@ BlueBubbles supports mention gating for group chats, matching iMessage/WhatsApp 
 
 Per-group configuration:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     bluebubbles: {
@@ -251,7 +241,7 @@ For stable group bindings, prefer `chat_id:*` or `chat_identifier:*`.
 
 Example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   agents: {
     list: [
@@ -287,7 +277,7 @@ See [ACP Agents](/tools/acp-agents) for shared ACP binding behavior.
 * **Read receipts**: Controlled by `channels.bluebubbles.sendReadReceipts` (default: `true`).
 * **Typing indicators**: OpenClaw sends typing start events; BlueBubbles clears typing automatically on send or timeout (manual stop via DELETE is unreliable).
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     bluebubbles: {
@@ -301,7 +291,7 @@ See [ACP Agents](/tools/acp-agents) for shared ACP binding behavior.
 
 BlueBubbles supports advanced message actions when enabled in config:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     bluebubbles: {
@@ -359,7 +349,7 @@ See [Configuration](/gateway/configuration) for template variables.
 
 Control whether responses are sent as a single message or streamed in blocks:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     bluebubbles: {
@@ -443,6 +433,3 @@ For general channel workflow reference, see [Channels](/channels) and the [Plugi
 * [Groups](/channels/groups) — group chat behavior and mention gating
 * [Channel Routing](/channels/channel-routing) — session routing for messages
 * [Security](/gateway/security) — access model and hardening
-
-
-Built with [Mintlify](https://mintlify.com).

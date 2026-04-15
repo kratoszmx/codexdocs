@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Installer Internals
 
 # Installer internals
@@ -28,31 +18,31 @@ OpenClaw ships three installer scripts, served from `openclaw.ai`.
 
 <Tabs>
   <Tab title="install.sh">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash
     ```
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --help
     ```
   </Tab>
 
   <Tab title="install-cli.sh">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash
     ```
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash -s -- --help
     ```
   </Tab>
 
   <Tab title="install.ps1">
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     iwr -useb https://openclaw.ai/install.ps1 | iex
     ```
 
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -Tag beta -NoOnboard -DryRun
     ```
   </Tab>
@@ -115,31 +105,31 @@ The script exits with code `2` for invalid method selection or invalid `--instal
 
 <Tabs>
   <Tab title="Default">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash
     ```
   </Tab>
 
   <Tab title="Skip onboarding">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --no-onboard
     ```
   </Tab>
 
   <Tab title="Git install">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --install-method git
     ```
   </Tab>
 
   <Tab title="GitHub main via npm">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --version main
     ```
   </Tab>
 
   <Tab title="Dry run">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --dry-run
     ```
   </Tab>
@@ -220,31 +210,31 @@ The script exits with code `2` for invalid method selection or invalid `--instal
 
 <Tabs>
   <Tab title="Default">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash
     ```
   </Tab>
 
   <Tab title="Custom prefix + version">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash -s -- --prefix /opt/openclaw --version latest
     ```
   </Tab>
 
   <Tab title="Git install">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash -s -- --install-method git --git-dir ~/openclaw
     ```
   </Tab>
 
   <Tab title="Automation JSON output">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash -s -- --json --prefix /opt/openclaw
     ```
   </Tab>
 
   <Tab title="Run onboarding">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash -s -- --onboard
     ```
   </Tab>
@@ -316,37 +306,37 @@ The script exits with code `2` for invalid method selection or invalid `--instal
 
 <Tabs>
   <Tab title="Default">
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     iwr -useb https://openclaw.ai/install.ps1 | iex
     ```
   </Tab>
 
   <Tab title="Git install">
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -InstallMethod git
     ```
   </Tab>
 
   <Tab title="GitHub main via npm">
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -Tag main
     ```
   </Tab>
 
   <Tab title="Custom git directory">
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -InstallMethod git -GitDir "C:\openclaw"
     ```
   </Tab>
 
   <Tab title="Dry run">
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -DryRun
     ```
   </Tab>
 
   <Tab title="Debug trace">
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     # install.ps1 has no dedicated -Verbose flag yet.
     Set-PSDebug -Trace 1
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -NoOnboard
@@ -390,26 +380,26 @@ Use non-interactive flags/env vars for predictable runs.
 
 <Tabs>
   <Tab title="install.sh (non-interactive npm)">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash -s -- --no-prompt --no-onboard
     ```
   </Tab>
 
   <Tab title="install.sh (non-interactive git)">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     OPENCLAW_INSTALL_METHOD=git OPENCLAW_NO_PROMPT=1 \
       curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash
     ```
   </Tab>
 
   <Tab title="install-cli.sh (JSON)">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install-cli.sh | bash -s -- --json --prefix /opt/openclaw
     ```
   </Tab>
 
   <Tab title="install.ps1 (skip onboarding)">
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -NoOnboard
     ```
   </Tab>
@@ -431,7 +421,7 @@ Use non-interactive flags/env vars for predictable runs.
   <Accordion title="sharp/libvips issues">
     The scripts default `SHARP_IGNORE_GLOBAL_LIBVIPS=1` to avoid sharp building against system libvips. To override:
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     SHARP_IGNORE_GLOBAL_LIBVIPS=0 curl -fsSL --proto '=https' --tlsv1.2 https://openclaw.ai/install.sh | bash
     ```
   </Accordion>
@@ -448,7 +438,7 @@ Use non-interactive flags/env vars for predictable runs.
     `install.ps1` does not currently expose a `-Verbose` switch.
     Use PowerShell tracing for script-level diagnostics:
 
-    ```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
     Set-PSDebug -Trace 1
     & ([scriptblock]::Create((iwr -useb https://openclaw.ai/install.ps1))) -NoOnboard
     Set-PSDebug -Trace 0
@@ -459,6 +449,3 @@ Use non-interactive flags/env vars for predictable runs.
     Usually a PATH issue. See [Node.js troubleshooting](/install/node#troubleshooting).
   </Accordion>
 </AccordionGroup>
-
-
-Built with [Mintlify](https://mintlify.com).

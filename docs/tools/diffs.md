@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Diffs
 
 # Diffs
@@ -40,7 +30,7 @@ When enabled, the plugin prepends concise usage guidance into system-prompt spac
 
 ## Enable the plugin
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   plugins: {
     entries: {
@@ -56,7 +46,7 @@ When enabled, the plugin prepends concise usage guidance into system-prompt spac
 
 If you want to keep the `diffs` tool enabled but disable its built-in system-prompt guidance, set `plugins.entries.diffs.hooks.allowPromptInjection` to `false`:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   plugins: {
     entries: {
@@ -88,7 +78,7 @@ If you want to disable both the guidance and the tool, disable the plugin instea
 
 Before and after:
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "before": "# Hello\n\nOne",
   "after": "# Hello\n\nTwo",
@@ -99,7 +89,7 @@ Before and after:
 
 Patch:
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "patch": "diff --git a/src/example.ts b/src/example.ts\n--- a/src/example.ts\n+++ b/src/example.ts\n@@ -1 +1 @@\n-const x = 1;\n+const x = 2;\n",
   "mode": "both"
@@ -206,7 +196,7 @@ Mode behavior summary:
 
 Set plugin-wide defaults in `~/.openclaw/openclaw.json`:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   plugins: {
     entries: {
@@ -263,7 +253,7 @@ Persistent viewer URL config:
 
 Example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   plugins: {
     entries: {
@@ -286,7 +276,7 @@ Example:
 
 Example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   plugins: {
     entries: {
@@ -439,6 +429,3 @@ Diff rendering engine:
 * [Tools overview](/tools)
 * [Plugins](/tools/plugin)
 * [Browser](/tools/browser)
-
-
-Built with [Mintlify](https://mintlify.com).

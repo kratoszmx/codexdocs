@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Windows
 
 # Windows
@@ -39,7 +29,7 @@ What works well on native Windows today:
 * local CLI use such as `openclaw --version`, `openclaw doctor`, and `openclaw plugins list --json`
 * embedded local-agent/provider smoke such as:
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw agent --local --agent main --thinking low -m "Reply with exactly WINDOWS-HATCH-OK."
 ```
 
@@ -53,14 +43,14 @@ Current caveats:
 
 If you want the native CLI only, without gateway service install, use one of these:
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw onboard --non-interactive --skip-health
 openclaw gateway run
 ```
 
 If you do want managed startup on native Windows:
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw gateway install
 openclaw gateway status --json
 ```
@@ -109,7 +99,7 @@ Windows.
 
 Inside WSL:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 sudo loginctl enable-linger "$(whoami)"
 ```
 
@@ -117,7 +107,7 @@ sudo loginctl enable-linger "$(whoami)"
 
 Inside WSL:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw gateway install
 ```
 
@@ -125,13 +115,13 @@ openclaw gateway install
 
 In PowerShell as Administrator:
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 schtasks /create /tn "WSL Boot" /tr "wsl.exe -d Ubuntu --exec /bin/true" /sc onstart /ru SYSTEM
 ```
 
 Replace `Ubuntu` with your distro name from:
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 wsl --list --verbose
 ```
 
@@ -139,7 +129,7 @@ wsl --list --verbose
 
 After a reboot (before Windows sign-in), check from WSL:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 systemctl --user is-enabled openclaw-gateway.service
 systemctl --user status openclaw-gateway.service --no-pager
 ```
@@ -153,7 +143,7 @@ so you may need to refresh the forwarding rule.
 
 Example (PowerShell **as Administrator**):
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 $Distro = "Ubuntu-24.04"
 $ListenPort = 2222
 $TargetPort = 22
@@ -167,14 +157,14 @@ netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=$ListenPor
 
 Allow the port through Windows Firewall (one-time):
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 New-NetFirewallRule -DisplayName "WSL SSH $ListenPort" -Direction Inbound `
   -Protocol TCP -LocalPort $ListenPort -Action Allow
 ```
 
 Refresh the portproxy after WSL restarts:
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 netsh interface portproxy delete v4tov4 listenport=$ListenPort listenaddress=0.0.0.0 | Out-Null
 netsh interface portproxy add v4tov4 listenport=$ListenPort listenaddress=0.0.0.0 `
   connectaddress=$WslIp connectport=$TargetPort | Out-Null
@@ -195,7 +185,7 @@ Notes:
 
 Open PowerShell (Admin):
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 wsl --install
 # Or pick a distro explicitly:
 wsl --list --online
@@ -208,7 +198,7 @@ Reboot if Windows asks.
 
 In your WSL terminal:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 sudo tee /etc/wsl.conf >/dev/null <<'EOF'
 [boot]
 systemd=true
@@ -217,13 +207,13 @@ EOF
 
 Then from PowerShell:
 
-```powershell  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```powershell theme={"theme":{"light":"min-light","dark":"min-dark"}}
 wsl --shutdown
 ```
 
 Re-open Ubuntu, then verify:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 systemctl --user status
 ```
 
@@ -231,7 +221,7 @@ systemctl --user status
 
 Follow the Linux Getting Started flow inside WSL:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 git clone https://github.com/openclaw/openclaw.git
 cd openclaw
 pnpm install
@@ -246,6 +236,3 @@ Full guide: [Getting Started](/start/getting-started)
 
 We do not have a Windows companion app yet. Contributions are welcome if you want
 contributions to make it happen.
-
-
-Built with [Mintlify](https://mintlify.com).

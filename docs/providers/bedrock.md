@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Amazon Bedrock
 
 # Amazon Bedrock
@@ -37,7 +27,7 @@ Choose your preferred auth method and follow the setup steps.
 
     <Steps>
       <Step title="Set AWS credentials on the gateway host">
-        ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
         export AWS_ACCESS_KEY_ID="AKIA..."
         export AWS_SECRET_ACCESS_KEY="..."
         export AWS_REGION="us-east-1"
@@ -52,7 +42,7 @@ Choose your preferred auth method and follow the setup steps.
       <Step title="Add a Bedrock provider and model to your config">
         No `apiKey` is required. Configure the provider with `auth: "aws-sdk"`:
 
-        ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
         {
           models: {
             providers: {
@@ -84,7 +74,7 @@ Choose your preferred auth method and follow the setup steps.
       </Step>
 
       <Step title="Verify models are available">
-        ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
         openclaw models list
         ```
       </Step>
@@ -102,7 +92,7 @@ Choose your preferred auth method and follow the setup steps.
       <Step title="Enable discovery explicitly">
         When using IMDS, OpenClaw cannot detect AWS auth from env markers alone, so you must opt in:
 
-        ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
         openclaw config set plugins.entries.amazon-bedrock.config.discovery.enabled true
         openclaw config set plugins.entries.amazon-bedrock.config.discovery.region us-east-1
         ```
@@ -111,7 +101,7 @@ Choose your preferred auth method and follow the setup steps.
       <Step title="Optionally add an env marker for auto mode">
         If you also want the env-marker auto-detection path to work (for example, for `openclaw status` surfaces):
 
-        ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
         export AWS_PROFILE=default
         export AWS_REGION=us-east-1
         ```
@@ -120,7 +110,7 @@ Choose your preferred auth method and follow the setup steps.
       </Step>
 
       <Step title="Verify models are discovered">
-        ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
         openclaw models list
         ```
       </Step>
@@ -170,7 +160,7 @@ How the implicit provider is enabled:
   <Accordion title="Discovery config options">
     Config options live under `plugins.entries.amazon-bedrock.config.discovery`:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       plugins: {
         entries: {
@@ -207,7 +197,7 @@ How the implicit provider is enabled:
 This walkthrough creates an IAM role, attaches Bedrock permissions, associates
 the instance profile, and enables OpenClaw discovery on the EC2 host.
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 # 1. Create IAM role and instance profile
 aws iam create-role --role-name EC2-Bedrock-Access \
   --assume-role-policy-document '{
@@ -273,7 +263,7 @@ openclaw models list
     topic denial, word filters, sensitive information filters, and contextual
     grounding checks.
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       plugins: {
         entries: {
@@ -309,7 +299,7 @@ openclaw models list
     [memory search](/concepts/memory-search). This is configured separately from the
     inference provider -- set `agents.defaults.memorySearch.provider` to `"bedrock"`:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       agents: {
         defaults: {
@@ -369,6 +359,3 @@ openclaw models list
     General troubleshooting and FAQ.
   </Card>
 </CardGroup>
-
-
-Built with [Mintlify](https://mintlify.com).

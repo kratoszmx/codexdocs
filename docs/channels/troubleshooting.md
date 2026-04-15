@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Channel Troubleshooting
 
 # Channel troubleshooting
@@ -22,7 +12,7 @@ Use this page when a channel connects but behavior is wrong.
 
 Run these in order first:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw status
 openclaw gateway status
 openclaw logs --follow
@@ -139,6 +129,3 @@ Full troubleshooting: [/channels/qqbot#troubleshooting](/channels/qqbot#troubles
 | Cross-signing/bootstrap looks wrong | `openclaw matrix verify bootstrap`     | Repair secret storage, cross-signing, and backup state in one pass.       |
 
 Full setup and config: [Matrix](/channels/matrix)
-
-
-Built with [Mintlify](https://mintlify.com).

@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Nostr
 
 # Nostr
@@ -31,13 +21,13 @@ builds do not need a separate install.
   Nostr from the shared channel catalog.
 * If your build excludes bundled Nostr, install it manually.
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install @openclaw/nostr
 ```
 
 Use a local checkout (dev workflows):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install --link <path-to-local-nostr-plugin>
 ```
 
@@ -45,7 +35,7 @@ Restart the Gateway after installing or enabling plugins.
 
 ### Non-interactive setup
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw channels add --channel nostr --private-key "$NOSTR_PRIVATE_KEY"
 openclaw channels add --channel nostr --private-key "$NOSTR_PRIVATE_KEY" --relay-urls "wss://relay.damus.io,wss://relay.primal.net"
 ```
@@ -56,14 +46,14 @@ Use `--use-env` to keep `NOSTR_PRIVATE_KEY` in the environment instead of storin
 
 1. Generate a Nostr keypair (if needed):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 # Using nak
 nak key generate
 ```
 
 2. Add to config:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     nostr: {
@@ -75,7 +65,7 @@ nak key generate
 
 3. Export the key:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 export NOSTR_PRIVATE_KEY="nsec1..."
 ```
 
@@ -99,7 +89,7 @@ Profile data is published as a NIP-01 `kind:0` event. You can manage it from the
 
 Example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     nostr: {
@@ -141,7 +131,7 @@ Enforcement notes:
 
 ### Allowlist example
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     nostr: {
@@ -164,7 +154,7 @@ Accepted formats:
 
 Defaults: `relay.damus.io` and `nos.lol`.
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     nostr: {
@@ -195,12 +185,12 @@ Tips:
 
 ### Local relay
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 # Start strfry
 docker run -p 7777:7777 ghcr.io/hoytech/strfry
 ```
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     nostr: {
@@ -258,6 +248,3 @@ docker run -p 7777:7777 ghcr.io/hoytech/strfry
 * [Groups](/channels/groups) — group chat behavior and mention gating
 * [Channel Routing](/channels/channel-routing) — session routing for messages
 * [Security](/gateway/security) — access model and hardening
-
-
-Built with [Mintlify](https://mintlify.com).

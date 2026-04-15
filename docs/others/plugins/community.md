@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Community Plugins
 
 # Community Plugins
@@ -25,7 +15,7 @@ ClawHub is the canonical discovery surface for community plugins. Do not open
 docs-only PRs just to add your plugin here for discoverability; publish it on
 ClawHub instead.
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install <package-name>
 ```
 
@@ -42,7 +32,7 @@ commands for resume, planning, review, model selection, compaction, and more.
 * **npm:** `openclaw-codex-app-server`
 * **repo:** [github.com/pwrdrvr/openclaw-codex-app-server](https://github.com/pwrdrvr/openclaw-codex-app-server)
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install openclaw-codex-app-server
 ```
 
@@ -54,7 +44,7 @@ file messages via any DingTalk client.
 * **npm:** `@largezhou/ddingtalk`
 * **repo:** [github.com/largezhou/openclaw-dingtalk](https://github.com/largezhou/openclaw-dingtalk)
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install @largezhou/ddingtalk
 ```
 
@@ -67,7 +57,7 @@ while reducing token usage.
 * **npm:** `@martian-engineering/lossless-claw`
 * **repo:** [github.com/Martian-Engineering/lossless-claw](https://github.com/Martian-Engineering/lossless-claw)
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install @martian-engineering/lossless-claw
 ```
 
@@ -79,7 +69,7 @@ cost, tokens, errors, and more.
 * **npm:** `@opik/opik-openclaw`
 * **repo:** [github.com/comet-ml/opik-openclaw](https://github.com/comet-ml/opik-openclaw)
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install @opik/opik-openclaw
 ```
 
@@ -92,7 +82,7 @@ and files.
 * **npm:** `@tencent-connect/openclaw-qqbot`
 * **repo:** [github.com/tencent-connect/openclaw-qqbot](https://github.com/tencent-connect/openclaw-qqbot)
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install @tencent-connect/openclaw-qqbot
 ```
 
@@ -106,7 +96,7 @@ formatting, built-in access control, and document/meeting/messaging skills.
 * **npm:** `@wecom/wecom-openclaw-plugin`
 * **repo:** [github.com/WecomTeam/wecom-openclaw-plugin](https://github.com/WecomTeam/wecom-openclaw-plugin)
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install @wecom/wecom-openclaw-plugin
 ```
 
@@ -152,6 +142,3 @@ Low-effort wrappers, unclear ownership, or unmaintained packages may be declined
 * [Install and Configure Plugins](/tools/plugin) — how to install any plugin
 * [Building Plugins](/plugins/building-plugins) — create your own
 * [Plugin Manifest](/plugins/manifest) — manifest schema
-
-
-Built with [Mintlify](https://mintlify.com).

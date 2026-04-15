@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # ACP Agents
 
 # ACP agents
@@ -241,7 +231,7 @@ Override precedence for ACP bound sessions:
 
 Example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   agents: {
     list: [
@@ -334,7 +324,7 @@ Behavior:
 
 Use `runtime: "acp"` to start an ACP session from an agent turn or tool call.
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "task": "Open the repo and summarize failing tests",
   "runtime": "acp",
@@ -370,7 +360,7 @@ Interface details:
 
 Use `resumeSessionId` to continue a previous ACP session instead of starting fresh. The agent replays its conversation history via `session/load`, so it picks up with full context of what came before.
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "task": "Continue where we left off — fix the remaining test failures",
   "runtime": "acp",
@@ -417,7 +407,7 @@ Recommended gate:
 
 Example prompt to the live agent:
 
-```text  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```text theme={"theme":{"light":"min-light","dark":"min-dark"}}
 Use the sessions_spawn tool now with runtime: "acp", agentId: "codex", and mode: "run".
 Set the task to: "Reply with exactly LIVE-ACP-SPAWN-OK".
 Then report only: accepted=<yes/no>; childSessionKey=<value or none>; error=<exact text or none>.
@@ -449,7 +439,7 @@ Use `runtime: "subagent"` when you need sandbox-enforced execution.
 
 Use `/acp spawn` for explicit operator control from chat when needed.
 
-```text  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```text theme={"theme":{"light":"min-light","dark":"min-dark"}}
 /acp spawn codex --mode persistent --thread auto
 /acp spawn codex --mode oneshot --thread off
 /acp spawn codex --bind here
@@ -605,7 +595,7 @@ Direct acpx CLI usage can also target arbitrary adapters via `--agent <command>`
 
 Core ACP baseline:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   acp: {
     enabled: true,
@@ -643,7 +633,7 @@ Core ACP baseline:
 
 Thread binding config is channel-adapter specific. Example for Discord:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   session: {
     threadBindings: {
@@ -678,27 +668,27 @@ usually works without a manual plugin install step.
 
 Start with:
 
-```text  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```text theme={"theme":{"light":"min-light","dark":"min-dark"}}
 /acp doctor
 ```
 
 If you disabled `acpx`, denied it via `plugins.allow` / `plugins.deny`, or want
 to switch to a local development checkout, use the explicit plugin path:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install acpx
 openclaw config set plugins.entries.acpx.enabled true
 ```
 
 Local workspace install during development:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw plugins install ./path/to/local/acpx-plugin
 ```
 
 Then verify backend health:
 
-```text  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```text theme={"theme":{"light":"min-light","dark":"min-dark"}}
 /acp doctor
 ```
 
@@ -715,7 +705,7 @@ By default, the bundled acpx backend plugin (`acpx`) uses the plugin-local pinne
 
 You can override command/version in plugin config:
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "plugins": {
     "entries": {
@@ -756,7 +746,7 @@ the ACP harness.
 If you want ACP agents such as Codex or Claude Code to call installed
 OpenClaw plugin tools such as memory recall/store, enable the dedicated bridge:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw config set plugins.entries.acpx.config.pluginToolsMcpBridge true
 ```
 
@@ -786,7 +776,7 @@ timeout. This gives slower harnesses such as Gemini CLI enough time to complete
 ACP startup and initialization. Override it if your host needs a different
 runtime limit:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw config set plugins.entries.acpx.config.timeoutSeconds 180
 ```
 
@@ -821,7 +811,7 @@ Controls what happens when a permission prompt would be shown but no interactive
 
 Set via plugin config:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw config set plugins.entries.acpx.config.permissionMode approve-all
 openclaw config set plugins.entries.acpx.config.nonInteractivePermissions fail
 ```
@@ -852,6 +842,3 @@ Restart the gateway after changing these values.
 | `AcpRuntimeError: Permission prompt unavailable in non-interactive mode`    | `permissionMode` blocks writes/exec in non-interactive ACP session.             | Set `plugins.entries.acpx.config.permissionMode` to `approve-all` and restart gateway. See [Permission configuration](#permission-configuration).                 |
 | ACP session fails early with little output                                  | Permission prompts are blocked by `permissionMode`/`nonInteractivePermissions`. | Check gateway logs for `AcpRuntimeError`. For full permissions, set `permissionMode=approve-all`; for graceful degradation, set `nonInteractivePermissions=deny`. |
 | ACP session stalls indefinitely after completing work                       | Harness process finished but ACP session did not report completion.             | Monitor with `ps aux \| grep acpx`; kill stale processes manually.                                                                                                |
-
-
-Built with [Mintlify](https://mintlify.com).

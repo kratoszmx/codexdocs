@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # acp
 
 # acp
@@ -88,7 +78,7 @@ Quick rule:
 
 ## Usage
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw acp
 
 # Remote Gateway
@@ -112,7 +102,7 @@ openclaw acp --session agent:main:main --reset-session
 Use the built-in ACP client to sanity-check the bridge without an IDE.
 It spawns the ACP bridge and lets you type prompts interactively.
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw acp client
 
 # Point the spawned bridge at a remote Gateway
@@ -141,14 +131,14 @@ it to drive an OpenClaw Gateway session.
 
 Example config (persisted):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw config set gateway.remote.url wss://gateway-host:18789
 openclaw config set gateway.remote.token <token>
 ```
 
 Example direct run (no config write):
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw acp --url wss://gateway-host:18789 --token <token>
 # preferred for local process safety
 openclaw acp --url wss://gateway-host:18789 --token-file ~/.openclaw/gateway.token
@@ -160,7 +150,7 @@ ACP does not pick agents directly. It routes by the Gateway session key.
 
 Use agent-scoped session keys to target a specific agent:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw acp --session agent:main:main
 openclaw acp --session agent:design:main
 openclaw acp --session agent:qa:bug-123
@@ -191,7 +181,7 @@ Typical flow:
 
 Examples:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 # One-shot request into your default OpenClaw ACP session
 acpx openclaw exec "Summarize the active OpenClaw session state."
 
@@ -204,7 +194,7 @@ acpx openclaw -s codex-bridge --cwd /path/to/repo \
 If you want `acpx openclaw` to target a specific Gateway and session key every
 time, override the `openclaw` agent command in `~/.acpx/config.json`:
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "agents": {
     "openclaw": {
@@ -217,7 +207,7 @@ time, override the `openclaw` agent command in `~/.acpx/config.json`:
 For a repo-local OpenClaw checkout, use the direct CLI entrypoint instead of the
 dev runner so the ACP stream stays clean. For example:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 env OPENCLAW_HIDE_BANNER=1 OPENCLAW_SUPPRESS_NOTES=1 node openclaw.mjs acp ...
 ```
 
@@ -228,7 +218,7 @@ pull contextual information from an OpenClaw agent without scraping a terminal.
 
 Add a custom ACP agent in `~/.config/zed/settings.json` (or use Zed’s Settings UI):
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "agent_servers": {
     "OpenClaw ACP": {
@@ -243,7 +233,7 @@ Add a custom ACP agent in `~/.config/zed/settings.json` (or use Zed’s Settings
 
 To target a specific Gateway or agent:
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "agent_servers": {
     "OpenClaw ACP": {
@@ -277,7 +267,7 @@ To reuse a known session, pass a session key or label:
 
 If your ACP client supports metadata, you can override per session:
 
-```json  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   "_meta": {
     "sessionKey": "agent:main:main",
@@ -322,6 +312,3 @@ Security note:
 * `--server-args <args...>`: extra arguments passed to the ACP server.
 * `--server-verbose`: enable verbose logging on the ACP server.
 * `--verbose, -v`: verbose client logging.
-
-
-Built with [Mintlify](https://mintlify.com).

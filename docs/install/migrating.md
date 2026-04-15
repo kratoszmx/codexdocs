@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Migration Guide
 
 # Migrating OpenClaw to a New Machine
@@ -39,7 +29,7 @@ When you copy the **state directory** (`~/.openclaw/` by default) and your **wor
   <Step title="Stop the gateway and back up">
     On the **old** machine, stop the gateway so files are not changing mid-copy, then archive:
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     openclaw gateway stop
     cd ~
     tar -czf openclaw-state.tgz .openclaw
@@ -56,7 +46,7 @@ When you copy the **state directory** (`~/.openclaw/` by default) and your **wor
   <Step title="Copy state directory and workspace">
     Transfer the archive via `scp`, `rsync -a`, or an external drive, then extract:
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     cd ~
     tar -xzf openclaw-state.tgz
     ```
@@ -67,7 +57,7 @@ When you copy the **state directory** (`~/.openclaw/` by default) and your **wor
   <Step title="Run doctor and verify">
     On the new machine, run [Doctor](/gateway/doctor) to apply config migrations and repair services:
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     openclaw doctor
     openclaw gateway restart
     openclaw status
@@ -115,6 +105,3 @@ On the new machine, confirm:
 * [ ] Channels are still connected (no re-pairing needed)
 * [ ] The dashboard opens and shows existing sessions
 * [ ] Workspace files (memory, configs) are present
-
-
-Built with [Mintlify](https://mintlify.com).

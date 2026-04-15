@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Oracle Cloud
 
 # Oracle Cloud
@@ -47,7 +37,7 @@ Run a persistent OpenClaw Gateway on Oracle Cloud's **Always Free** ARM tier (up
   </Step>
 
   <Step title="Connect and update the system">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     ssh ubuntu@YOUR_PUBLIC_IP
 
     sudo apt update && sudo apt upgrade -y
@@ -58,7 +48,7 @@ Run a persistent OpenClaw Gateway on Oracle Cloud's **Always Free** ARM tier (up
   </Step>
 
   <Step title="Configure user and hostname">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     sudo hostnamectl set-hostname openclaw
     sudo passwd ubuntu
     sudo loginctl enable-linger ubuntu
@@ -68,7 +58,7 @@ Run a persistent OpenClaw Gateway on Oracle Cloud's **Always Free** ARM tier (up
   </Step>
 
   <Step title="Install Tailscale">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL https://tailscale.com/install.sh | sh
     sudo tailscale up --ssh --hostname=openclaw
     ```
@@ -77,7 +67,7 @@ Run a persistent OpenClaw Gateway on Oracle Cloud's **Always Free** ARM tier (up
   </Step>
 
   <Step title="Install OpenClaw">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     curl -fsSL https://openclaw.ai/install.sh | bash
     source ~/.bashrc
     ```
@@ -88,7 +78,7 @@ Run a persistent OpenClaw Gateway on Oracle Cloud's **Always Free** ARM tier (up
   <Step title="Configure the gateway">
     Use token auth with Tailscale Serve for secure remote access.
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     openclaw config set gateway.bind loopback
     openclaw config set gateway.auth.mode token
     openclaw doctor --generate-gateway-token
@@ -113,7 +103,7 @@ Run a persistent OpenClaw Gateway on Oracle Cloud's **Always Free** ARM tier (up
   </Step>
 
   <Step title="Verify">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     openclaw --version
     systemctl --user status openclaw-gateway.service
     tailscale serve status
@@ -134,7 +124,7 @@ Run a persistent OpenClaw Gateway on Oracle Cloud's **Always Free** ARM tier (up
 
 If Tailscale Serve is not working, use an SSH tunnel from your local machine:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 ssh -L 18789:127.0.0.1:18789 ubuntu@openclaw
 ```
 
@@ -155,6 +145,3 @@ Then open `http://localhost:18789`.
 * [Channels](/channels) -- connect Telegram, WhatsApp, Discord, and more
 * [Gateway configuration](/gateway/configuration) -- all config options
 * [Updating](/install/updating) -- keep OpenClaw up to date
-
-
-Built with [Mintlify](https://mintlify.com).

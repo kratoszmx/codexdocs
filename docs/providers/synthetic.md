@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Synthetic
 
 # Synthetic
@@ -36,7 +26,7 @@ Messages API.
   </Step>
 
   <Step title="Run onboarding">
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     openclaw onboard --auth-choice synthetic-api-key
     ```
   </Step>
@@ -58,7 +48,7 @@ Messages API.
 
 ## Config example
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   env: { SYNTHETIC_API_KEY: "sk-..." },
   agents: {
@@ -135,7 +125,7 @@ All Synthetic models use cost `0` (input/output/cache).
   <Accordion title="Base URL override">
     If Synthetic changes its API endpoint, override the base URL in your config:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       models: {
         providers: {
@@ -166,6 +156,3 @@ All Synthetic models use cost `0` (input/output/cache).
     Synthetic dashboard and API docs.
   </Card>
 </CardGroup>
-
-
-Built with [Mintlify](https://mintlify.com).

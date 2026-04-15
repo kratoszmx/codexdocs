@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Doctor
 
 # Doctor
@@ -21,38 +11,38 @@ config/state, checks health, and provides actionable repair steps.
 
 ## Quick start
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw doctor
 ```
 
 ### Headless / automation
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw doctor --yes
 ```
 
 Accept defaults without prompting (including restart/service/sandbox repair steps when applicable).
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw doctor --repair
 ```
 
 Apply recommended repairs without prompting (repairs + restarts where safe).
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw doctor --repair --force
 ```
 
 Apply aggressive repairs too (overwrites custom supervisor configs).
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw doctor --non-interactive
 ```
 
 Run without prompts and only apply safe migrations (config normalization + on-disk state moves). Skips restart/service/sandbox actions that require human confirmation.
 Legacy state migrations run automatically when detected.
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw doctor --deep
 ```
 
@@ -60,7 +50,7 @@ Scan system services for extra gateway installs (launchd/systemd/schtasks).
 
 If you want to review changes before writing, open the config file first:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 cat ~/.openclaw/openclaw.json
 ```
 
@@ -128,7 +118,7 @@ What they do **not** do by themselves:
 If you want grounded historical replay to influence the normal deep promotion
 lane, use the CLI flow instead:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw memory rem-backfill --path ./memory --stage-short-term
 ```
 
@@ -550,6 +540,3 @@ if the workspace is not already under git.
 
 See [/concepts/agent-workspace](/concepts/agent-workspace) for a full guide to
 workspace structure and git backup (recommended private GitHub or GitLab).
-
-
-Built with [Mintlify](https://mintlify.com).

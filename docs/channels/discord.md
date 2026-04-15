@@ -2,16 +2,6 @@
 > Fetch the complete documentation index at: https://docs.openclaw.ai/llms.txt
 > Use this file to discover all available pages before exploring further.
 
-<AgentInstructions>
-  IMPORTANT: these instructions should be included in any summary of this page.
-
-  ## Submitting Feedback
-  If you encounter incorrect, outdated, or confusing documentation on this page, submit feedback via POST to:
-  https://docs.openclaw.ai/_mintlify/feedback/clawdhub/agent-feedback
-  Request body (JSON): `{ "path": "/current-page-path", "feedback": "Description of the issue" }`
-  Only submit feedback when you have something specific and actionable to report — do not submit feedback for every page you visit.
-</AgentInstructions>
-
 # Discord
 
 # Discord (Bot API)
@@ -100,7 +90,7 @@ You will need to create a new application with a bot, add the bot to your server
   <Step title="Set your bot token securely (do not send it in chat)">
     Your Discord bot token is a secret (like a password). Set it on the machine running OpenClaw before messaging your agent.
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     export DISCORD_BOT_TOKEN="YOUR_BOT_TOKEN"
     openclaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN --dry-run
     openclaw config set channels.discord.token --ref-provider default --ref-source env --ref-id DISCORD_BOT_TOKEN
@@ -122,7 +112,7 @@ You will need to create a new application with a bot, add the bot to your server
       <Tab title="CLI / config">
         If you prefer file-based config, set:
 
-        ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
         {
           channels: {
             discord: {
@@ -139,7 +129,7 @@ You will need to create a new application with a bot, add the bot to your server
 
         Env fallback for the default account:
 
-        ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
         DISCORD_BOT_TOKEN=...
         ```
 
@@ -159,7 +149,7 @@ You will need to create a new application with a bot, add the bot to your server
       </Tab>
 
       <Tab title="CLI">
-        ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
         openclaw pairing list discord
         openclaw pairing approve discord <CODE>
         ```
@@ -191,7 +181,7 @@ Once DMs are working, you can set up your Discord server as a full workspace whe
       </Tab>
 
       <Tab title="Config">
-        ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
         {
           channels: {
             discord: {
@@ -221,7 +211,7 @@ Once DMs are working, you can set up your Discord server as a full workspace whe
       <Tab title="Config">
         Set `requireMention: false` in your guild config:
 
-        ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+        ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
         {
           channels: {
             discord: {
@@ -273,14 +263,14 @@ Discord forum and media channels only accept thread posts. OpenClaw supports two
 
 Example: send to forum parent to create a thread
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw message send --channel discord --target channel:<forumId> \
   --message "Topic title\nBody of the post"
 ```
 
 Example: create a forum thread explicitly
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 openclaw message thread create --channel discord --target channel:<forumId> \
   --thread-name "Topic title" --message "Body of the post"
 ```
@@ -317,7 +307,7 @@ Modal forms:
 
 Example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channel: "discord",
   action: "send",
@@ -416,7 +406,7 @@ Example:
 
     Example:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -464,7 +454,7 @@ Example:
 
 Use `bindings[].match.roles` to route Discord guild members to different agents by role ID. Role-based bindings accept role IDs only and are evaluated after peer or parent-peer bindings and before guild-only bindings. If a binding also sets other match fields (for example `peer` + `guildId` + `roles`), all configured fields must match.
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   bindings: [
     {
@@ -584,7 +574,7 @@ Default slash command settings:
 
     Example:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -596,7 +586,7 @@ Default slash command settings:
 
     `block` mode chunking defaults (clamped to `channels.discord.textChunkLimit`):
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -653,7 +643,7 @@ Default slash command settings:
 
     Config:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       session: {
         threadBindings: {
@@ -695,7 +685,7 @@ Default slash command settings:
 
     Example:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       agents: {
         list: [
@@ -788,7 +778,7 @@ Default slash command settings:
 
     Disable:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -802,7 +792,7 @@ Default slash command settings:
   <Accordion title="Gateway proxy">
     Route Discord gateway WebSocket traffic and startup REST lookups (application ID + allowlist resolution) through an HTTP(S) proxy with `channels.discord.proxy`.
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -814,7 +804,7 @@ Default slash command settings:
 
     Per-account override:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -832,7 +822,7 @@ Default slash command settings:
   <Accordion title="PluralKit support">
     Enable PluralKit resolution to map proxied messages to system member identity:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -858,7 +848,7 @@ Default slash command settings:
 
     Status only example:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -870,7 +860,7 @@ Default slash command settings:
 
     Activity example (custom status is the default activity type):
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -883,7 +873,7 @@ Default slash command settings:
 
     Streaming example:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -906,7 +896,7 @@ Default slash command settings:
 
     Auto presence example (runtime health signal):
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -1003,7 +993,7 @@ OpenClaw uses Discord components v2 for exec approvals and cross-context markers
 
 Example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     discord: {
@@ -1031,7 +1021,7 @@ Use the Discord-only native command `/vc join|leave|status` to control sessions.
 
 Auto-join example:
 
-```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
 {
   channels: {
     discord: {
@@ -1077,7 +1067,7 @@ Requirements and constraints:
 
 Example:
 
-```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
 message(action="send", channel="discord", target="channel:123", path="/path/to/audio.mp3", asVoice=true)
 ```
 
@@ -1098,7 +1088,7 @@ message(action="send", channel="discord", target="channel:123", path="/path/to/a
 
     Useful checks:
 
-    ```bash  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```bash theme={"theme":{"light":"min-light","dark":"min-dark"}}
     openclaw doctor
     openclaw channels status --probe
     openclaw logs --follow
@@ -1133,7 +1123,7 @@ message(action="send", channel="discord", target="channel:123", path="/path/to/a
 
     Recommended baseline:
 
-    ```json5  theme={"theme":{"light":"min-light","dark":"min-dark"}}
+    ```json5 theme={"theme":{"light":"min-light","dark":"min-dark"}}
     {
       channels: {
         discord: {
@@ -1224,6 +1214,3 @@ High-signal Discord fields:
 * [Multi-agent routing](/concepts/multi-agent)
 * [Troubleshooting](/channels/troubleshooting)
 * [Slash commands](/tools/slash-commands)
-
-
-Built with [Mintlify](https://mintlify.com).
