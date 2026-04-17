@@ -1,24 +1,86 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import json
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from urllib.parse import urlparse
 
 from tqdm.auto import tqdm
 
 import project_env  # noqa: F401
 from http_utils import fetch_bytes, fetch_text
-from markdown_utils import count_markdown_body_lines, is_empty_or_sparse_markdown
+from markdown_utils import count_markdown_body_lines, extract_markdown_links, is_empty_or_sparse_markdown
 
 ROOT = Path(__file__).resolve().parent
 DOCS_ROOT = ROOT / "docs"
 OTHERS_ROOT = DOCS_ROOT / "others"
 URLS_DIR = ROOT / "urls"
-LLMS_URL = "https://docs.openclaw.ai/llms.txt"
-DOC_PREFIX = "https://docs.openclaw.ai/"
+
+DEVELOPERS_LLMS_URL = "https://developers.openai.com/codex/llms.txt"
+DEVELOPERS_PREFIX = "https://developers.openai.com/"
+GITHUB_TREE_API_URL = "https://api.github.com/repos/openai/codex/git/trees/main?recursive=1"
+GITHUB_RAW_PREFIX = "https://raw.githubusercontent.com/openai/codex/main/"
+
 DEFAULT_MAX_WORKERS = 6
-LOCAL_OTHERS_SECTIONS = frozenset({"automation", "debug", "diagnostics", "nodes", "plugins", "security", "start", "web"})
+SELECTED_SECTION_PREFIXES = ["developers/codex", "github/docs"]
+
+CLI_DEVELOPER_EXACT_PATHS = frozenset(
+    {
+        "codex/agent-approvals-security.md",
+        "codex/auth.md",
+        "codex/cli.md",
+        "codex/config-advanced.md",
+        "codex/config-basic.md",
+        "codex/config-reference.md",
+        "codex/config-sample.md",
+        "codex/custom-prompts.md",
+        "codex/feature-maturity.md",
+        "codex/hooks.md",
+        "codex/mcp.md",
+        "codex/memories.md",
+        "codex/models.md",
+        "codex/noninteractive.md",
+        "codex/overview.md",
+        "codex/plugins.md",
+        "codex/prompting.md",
+        "codex/quickstart.md",
+        "codex/remote-connections.md",
+        "codex/rules.md",
+        "codex/sdk.md",
+        "codex/skills.md",
+        "codex/speed.md",
+        "codex/subagents.md",
+        "codex/windows.md",
+        "codex/workflows.md",
+    }
+)
+CLI_DEVELOPER_PREFIXES = (
+    "codex/cli/",
+    "codex/concepts/",
+    "codex/guides/",
+    "codex/learn/",
+    "codex/plugins/",
+)
+CLI_GITHUB_DOC_PATHS = frozenset(
+    {
+        "README.md",
+        "AGENTS.md",
+        "docs/agents_md.md",
+        "docs/authentication.md",
+        "docs/config.md",
+        "docs/example-config.md",
+        "docs/exec.md",
+        "docs/execpolicy.md",
+        "docs/getting-started.md",
+        "docs/install.md",
+        "docs/js_repl.md",
+        "docs/sandbox.md",
+        "docs/skills.md",
+        "docs/slash_commands.md",
+    }
+)
 
 
 def body_line_count(text: str) -> int:
@@ -29,66 +91,96 @@ def is_empty_or_truncated(text: str) -> bool:
     return is_empty_or_sparse_markdown(text)
 
 
-def extract_doc_urls(llms_text: str) -> list[str]:
-    return sorted(set(re.findall(r"https://docs\.openclaw\.ai/[^\s)]+\.md", llms_text)))
+def is_bad_doc(rel: str, text: str) -> bool:
+    if len(text.strip()) == 0:
+        return True
+    if rel.startswith("github/docs/"):
+        link_count = len(extract_markdown_links(text))
+        if body_line_count(text) >= 2 and link_count >= 1:
+            return False
+    return is_empty_or_sparse_markdown(text)
+
+
+def is_cli_developer_path(path: str) -> bool:
+    return path in CLI_DEVELOPER_EXACT_PATHS or any(path.startswith(prefix) for prefix in CLI_DEVELOPER_PREFIXES)
+
+
+def extract_developer_doc_urls(llms_text: str) -> list[str]:
+    urls = set(re.findall(r"https://developers\.openai\.com/codex/[^\s)]+\.md", llms_text))
+    return sorted(url for url in urls if is_cli_developer_path(urlparse(url).path.lstrip("/")))
+
+
+def developer_doc_urls(timeout: int = 45) -> list[str]:
+    return extract_developer_doc_urls(fetch_text(DEVELOPERS_LLMS_URL, timeout=timeout))
+
+
+def is_github_repo_doc_path(path: str) -> bool:
+    return path in CLI_GITHUB_DOC_PATHS
+
+
+def extract_github_repo_doc_urls(tree_json_text: str) -> list[str]:
+    payload = json.loads(tree_json_text)
+    tree = payload.get("tree")
+    if not isinstance(tree, list):
+        message = payload.get("message") if isinstance(payload, dict) else None
+        raise RuntimeError(f"unexpected GitHub tree payload: {message or type(payload).__name__}")
+
+    urls: list[str] = []
+    for entry in tree:
+        if not isinstance(entry, dict) or entry.get("type") != "blob":
+            continue
+        path = entry.get("path")
+        if isinstance(path, str) and is_github_repo_doc_path(path):
+            urls.append(GITHUB_RAW_PREFIX + path)
+    return sorted(set(urls))
+
+
+def github_repo_doc_urls(timeout: int = 45) -> list[str]:
+    return extract_github_repo_doc_urls(fetch_text(GITHUB_TREE_API_URL, timeout=timeout))
 
 
 def all_doc_urls(timeout: int = 45) -> list[str]:
-    return extract_doc_urls(fetch_text(LLMS_URL, timeout=timeout))
+    return developer_doc_urls(timeout=timeout) + github_repo_doc_urls(timeout=timeout)
+
+
+def rel_from_url(url: str) -> str:
+    if url.startswith(DEVELOPERS_PREFIX):
+        return f"developers/{url[len(DEVELOPERS_PREFIX):]}"
+    if url.startswith(GITHUB_RAW_PREFIX):
+        return f"github/{url[len(GITHUB_RAW_PREFIX):]}"
+    raise ValueError(f"unsupported doc url: {url}")
 
 
 def rels_from_urls(urls: list[str]) -> list[str]:
-    return [url.replace(DOC_PREFIX, "") for url in urls]
+    seen: set[str] = set()
+    rels: list[str] = []
+    for url in urls:
+        rel = rel_from_url(url)
+        if rel in seen:
+            continue
+        seen.add(rel)
+        rels.append(rel)
+    return rels
+
+
+def url_from_rel(rel: str) -> str:
+    if rel.startswith("developers/"):
+        return DEVELOPERS_PREFIX + rel.removeprefix("developers/")
+    if rel.startswith("github/"):
+        return GITHUB_RAW_PREFIX + rel.removeprefix("github/")
+    raise ValueError(f"unsupported doc rel: {rel}")
 
 
 def urls_from_rels(rels: list[str]) -> list[str]:
-    return [DOC_PREFIX + rel for rel in rels]
-
-
-def local_doc_rel(rel: str) -> Path:
-    """Map a docs.openclaw.ai relative path to the local path under `docs/`.
-
-    Local layout rule:
-    - root-level markdown files are grouped under `docs/others/`
-    - selected top-level sections also live under `docs/others/<section>/`
-    - all other nested docs keep their original section path under `docs/`
-    """
-    rel_path = Path(rel)
-    if rel_path.parts[:1] == ("others",):
-        return rel_path
-    if rel_path.parent == Path("."):
-        return Path("others") / rel_path.name
-    if rel_path.parts[0] in LOCAL_OTHERS_SECTIONS:
-        return Path("others") / rel_path
-    return rel_path
-
-
-def site_rel_from_local(local_rel: str | Path) -> str:
-    """Invert a local `docs/` relative path back to a site-relative path."""
-    local_path = Path(local_rel)
-    if local_path.parts[:1] != ("others",):
-        return local_path.as_posix()
-    if len(local_path.parts) == 2:
-        return local_path.name
-    if local_path.parts[1] in LOCAL_OTHERS_SECTIONS:
-        return Path(*local_path.parts[1:]).as_posix()
-    return local_path.as_posix()
+    return [url_from_rel(rel) for rel in rels]
 
 
 def doc_path(rel: str) -> Path:
-    """Map a docs.openclaw.ai relative markdown path to the local mirror path.
-
-    Local layout rule:
-    - root-level markdown files are grouped under `docs/others/`
-    - selected top-level sections also live under `docs/others/<section>/`
-    - all other nested docs keep their original section path under `docs/`
-    """
-    return DOCS_ROOT / local_doc_rel(rel)
+    return DOCS_ROOT / Path(rel)
 
 
 def ensure_dirs() -> None:
     DOCS_ROOT.mkdir(exist_ok=True)
-    OTHERS_ROOT.mkdir(exist_ok=True)
     URLS_DIR.mkdir(exist_ok=True)
 
 
@@ -98,22 +190,14 @@ def write_url_list(name: str, urls: list[str]) -> None:
 
 
 def url_record_path(rel: str) -> Path:
-    """Return the mirrored URL-record path under `urls/` for a doc rel path.
-
-    The `urls/` tree mirrors the local `docs/` tree. Examples:
-    - `gateway/configuration.md` -> `urls/gateway/configuration.txt`
-    - root-level `index.md` -> `urls/others/index.txt`
-    - `automation/index.md` -> `urls/others/automation/index.txt`
-    """
-    local_rel = local_doc_rel(rel)
-    return (URLS_DIR / local_rel).with_suffix(".txt")
+    return (URLS_DIR / Path(rel)).with_suffix(".txt")
 
 
 def write_url_record(rel: str) -> Path:
     ensure_dirs()
     path = url_record_path(rel)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(DOC_PREFIX + rel + "\n", encoding="utf-8")
+    path.write_text(url_from_rel(rel) + "\n", encoding="utf-8")
     return path
 
 
@@ -122,30 +206,34 @@ def write_url_records(rels: list[str]) -> list[Path]:
 
 
 def nested_others_rels_from_docs() -> list[str]:
-    """Return unambiguous site rels recoverable from the local docs tree.
+    return []
 
-    Local `docs/others/*.md` at the top level can be ambiguous because root-level
-    docs are also grouped there. Nested paths like `docs/others/web/index.md`
-    or `docs/others/custom/index.md` map unambiguously back to a site rel.
-    """
-    rels: list[str] = []
-    for path in DOCS_ROOT.rglob("*.md"):
-        local_rel = path.relative_to(DOCS_ROOT)
-        if local_rel.parts[:1] == ("others",) and len(local_rel.parts) > 2:
-            rels.append(site_rel_from_local(local_rel))
-    return sorted(set(rels))
+
+def prune_stale_docs(rels: list[str]) -> list[Path]:
+    ensure_dirs()
+    desired = {doc_path(rel).relative_to(DOCS_ROOT) for rel in sorted(set(rels))}
+    removed: list[Path] = []
+
+    for path in sorted(DOCS_ROOT.rglob("*.md")):
+        rel_path = path.relative_to(DOCS_ROOT)
+        if rel_path not in desired:
+            path.unlink()
+            removed.append(path)
+
+    for path in sorted((p for p in DOCS_ROOT.rglob("*") if p.is_dir()), reverse=True):
+        if path == DOCS_ROOT:
+            continue
+        if any(path.iterdir()):
+            continue
+        path.rmdir()
+
+    return removed
 
 
 def rebuild_url_records(rels: list[str], keep_root_files: set[str] | None = None) -> list[Path]:
-    """Rewrite mirrored URL records so `urls/` matches the local `docs/` tree.
-
-    Root index files such as `all.txt` can be kept via `keep_root_files`.
-    All other stale `.txt` files under `urls/` are removed.
-    """
     ensure_dirs()
     keep_root = {"all.txt", "selected_sections.txt"} if keep_root_files is None else set(keep_root_files)
-    all_rels = sorted(set(rels) | set(nested_others_rels_from_docs()))
-    desired = {url_record_path(rel).relative_to(URLS_DIR) for rel in all_rels}
+    desired = {url_record_path(rel).relative_to(URLS_DIR) for rel in sorted(set(rels))}
 
     for path in sorted(URLS_DIR.rglob("*.txt")):
         rel_path = path.relative_to(URLS_DIR)
@@ -154,7 +242,7 @@ def rebuild_url_records(rels: list[str], keep_root_files: set[str] | None = None
         if rel_path not in desired:
             path.unlink()
 
-    written = write_url_records(all_rels)
+    written = write_url_records(sorted(set(rels)))
 
     for path in sorted((p for p in URLS_DIR.rglob("*") if p.is_dir()), reverse=True):
         if path == URLS_DIR:
@@ -166,17 +254,22 @@ def rebuild_url_records(rels: list[str], keep_root_files: set[str] | None = None
     return written
 
 
+def _rel_matches_prefix(rel: str, prefix: str) -> bool:
+    normalized = prefix.rstrip("/")
+    return rel == normalized or rel == normalized + ".md" or rel.startswith(normalized + "/")
+
+
 def filter_rels_by_prefix(rels: list[str], prefix: str) -> list[str]:
-    return [rel for rel in rels if rel.startswith(prefix + "/")]
+    return [rel for rel in rels if _rel_matches_prefix(rel, prefix)]
 
 
 def filter_rels_by_prefixes(rels: list[str], prefixes: list[str]) -> list[str]:
-    allowed = tuple(prefix + "/" for prefix in prefixes)
-    return [rel for rel in rels if rel.startswith(allowed)]
+    normalized = [prefix.rstrip("/") for prefix in prefixes]
+    return [rel for rel in rels if any(_rel_matches_prefix(rel, prefix) for prefix in normalized)]
 
 
 def download_rel(rel: str, timeout: int = 45) -> tuple[bool, str | None]:
-    url = DOC_PREFIX + rel
+    url = url_from_rel(rel)
     path = doc_path(rel)
     try:
         data = fetch_bytes(url, timeout=timeout)
@@ -186,12 +279,15 @@ def download_rel(rel: str, timeout: int = 45) -> tuple[bool, str | None]:
         return False, f"download:{exc}"
 
     text = path.read_text(encoding="utf-8", errors="ignore")
-    if is_empty_or_truncated(text):
+    if is_bad_doc(rel, text):
         try:
             data = fetch_bytes(url, timeout=timeout)
             path.write_bytes(data)
+            text = path.read_text(encoding="utf-8", errors="ignore")
         except Exception as exc:  # noqa: BLE001
             return False, f"redownload:{exc}"
+        if is_bad_doc(rel, text):
+            return False, "content:empty-or-sparse"
     return True, None
 
 
@@ -214,7 +310,7 @@ def sync_rels(
             need_download = force_download or (not path.exists())
             if not need_download:
                 text = path.read_text(encoding="utf-8", errors="ignore")
-                need_download = is_empty_or_truncated(text)
+                need_download = is_bad_doc(rel, text)
             if need_download:
                 pending.append(rel)
             else:
@@ -263,7 +359,7 @@ def check_rels(rels: list[str]) -> tuple[list[str], list[str]]:
             progress.set_postfix(missing=len(missing), bad=len(bad), refresh=False)
             continue
         text = path.read_text(encoding="utf-8", errors="ignore")
-        if is_empty_or_truncated(text):
+        if is_bad_doc(rel, text):
             bad.append(rel)
         progress.set_postfix(missing=len(missing), bad=len(bad), refresh=False)
     return missing, bad

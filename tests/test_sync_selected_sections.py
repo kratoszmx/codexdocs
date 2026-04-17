@@ -8,10 +8,10 @@ SECTIONS = sync_selected_sections.SECTIONS
 
 def test_sync_selected_sections_updates_index_and_mirrored_records(monkeypatch, capsys) -> None:
     monkeypatch.setattr(sync_selected_sections, "all_doc_urls", lambda timeout: [
-        "https://docs.openclaw.ai/tools/browser.md",
-        "https://docs.openclaw.ai/install/docker.md",
-        "https://docs.openclaw.ai/gateway/index.md",
-        "https://docs.openclaw.ai/concepts/agent.md",
+        "https://developers.openai.com/codex/cli.md",
+        "https://developers.openai.com/codex/quickstart.md",
+        "https://raw.githubusercontent.com/openai/codex/main/docs/install.md",
+        "https://raw.githubusercontent.com/openai/codex/main/README.md",
     ])
 
     index_calls: list[tuple[str, list[str]]] = []
@@ -32,8 +32,16 @@ def test_sync_selected_sections_updates_index_and_mirrored_records(monkeypatch, 
     monkeypatch.setattr(sys, "argv", ["sync_selected_sections.py", "--timeout", "12", "--workers", "5"])
     sync_selected_sections.main()
 
-    expected_rels = ["tools/browser.md", "install/docker.md", "gateway/index.md"]
-    expected_urls = [f"https://docs.openclaw.ai/{rel}" for rel in expected_rels]
+    expected_rels = [
+        "developers/codex/cli.md",
+        "developers/codex/quickstart.md",
+        "github/docs/install.md",
+    ]
+    expected_urls = [
+        "https://developers.openai.com/codex/cli.md",
+        "https://developers.openai.com/codex/quickstart.md",
+        "https://raw.githubusercontent.com/openai/codex/main/docs/install.md",
+    ]
 
     out = capsys.readouterr().out
     assert index_calls == [("selected_sections.txt", expected_urls)]

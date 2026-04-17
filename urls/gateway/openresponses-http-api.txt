@@ -1,1 +1,0 @@
-https://docs.openclaw.ai/gateway/openresponses-http-api.md

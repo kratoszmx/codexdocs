@@ -1,88 +1,104 @@
 from pathlib import Path
 
 import sync_common
-from sync_common import DOCS_ROOT, OTHERS_ROOT, URLS_DIR, doc_path, nested_others_rels_from_docs, rebuild_url_records, url_record_path
+from sync_common import DOCS_ROOT, URLS_DIR, doc_path, is_bad_doc, prune_stale_docs, rebuild_url_records, rels_from_urls, url_record_path, urls_from_rels
 
 
-def test_doc_path_maps_root_level_docs_to_others() -> None:
-    assert doc_path("index.md") == OTHERS_ROOT / "index.md"
-    assert doc_path("ci.md") == OTHERS_ROOT / "ci.md"
-    assert doc_path("vps.md") == OTHERS_ROOT / "vps.md"
+def test_rels_from_urls_maps_developers_and_github_sources() -> None:
+    urls = [
+        "https://developers.openai.com/codex/cli.md",
+        "https://developers.openai.com/codex/cli/reference.md",
+        "https://raw.githubusercontent.com/openai/codex/main/docs/install.md",
+        "https://raw.githubusercontent.com/openai/codex/main/README.md",
+    ]
+
+    assert rels_from_urls(urls) == [
+        "developers/codex/cli.md",
+        "developers/codex/cli/reference.md",
+        "github/docs/install.md",
+        "github/README.md",
+    ]
+    assert urls_from_rels(rels_from_urls(urls)) == urls
 
 
-def test_doc_path_keeps_nested_docs_under_original_sections() -> None:
-    assert doc_path("tools/browser.md") == DOCS_ROOT / Path("tools/browser.md")
-    assert doc_path("gateway/index.md") == DOCS_ROOT / Path("gateway/index.md")
-    assert doc_path("reference/templates/USER.md") == DOCS_ROOT / Path("reference/templates/USER.md")
-
-
-def test_doc_path_maps_selected_top_level_sections_under_others() -> None:
-    assert doc_path("automation/index.md") == DOCS_ROOT / Path("others/automation/index.md")
-    assert doc_path("nodes/index.md") == DOCS_ROOT / Path("others/nodes/index.md")
-    assert doc_path("web/index.md") == DOCS_ROOT / Path("others/web/index.md")
+def test_doc_path_keeps_source_namespace() -> None:
+    assert doc_path("developers/codex/cli.md") == DOCS_ROOT / Path("developers/codex/cli.md")
+    assert doc_path("github/docs/install.md") == DOCS_ROOT / Path("github/docs/install.md")
+    assert doc_path("github/README.md") == DOCS_ROOT / Path("github/README.md")
 
 
 def test_url_record_path_mirrors_local_docs_structure() -> None:
-    assert url_record_path("index.md") == URLS_DIR / Path("others/index.txt")
-    assert url_record_path("gateway/index.md") == URLS_DIR / Path("gateway/index.txt")
-    assert url_record_path("platforms/mac/canvas.md") == URLS_DIR / Path("platforms/mac/canvas.txt")
-    assert url_record_path("automation/index.md") == URLS_DIR / Path("others/automation/index.txt")
-    assert url_record_path("web/index.md") == URLS_DIR / Path("others/web/index.txt")
+    assert url_record_path("developers/codex/cli.md") == URLS_DIR / Path("developers/codex/cli.txt")
+    assert url_record_path("github/docs/install.md") == URLS_DIR / Path("github/docs/install.txt")
+    assert url_record_path("github/README.md") == URLS_DIR / Path("github/README.txt")
 
 
-def test_nested_others_rels_from_docs_finds_unambiguous_local_docs(tmp_path, monkeypatch) -> None:
+def test_prune_stale_docs_removes_old_mirror_files(tmp_path, monkeypatch) -> None:
     docs_root = tmp_path / "docs"
-    others_root = docs_root / "others"
-    (others_root / "web").mkdir(parents=True)
-    (others_root / "custom").mkdir(parents=True)
-    (others_root / "web" / "index.md").write_text("# web\n", encoding="utf-8")
-    (others_root / "custom" / "index.md").write_text("# custom\n", encoding="utf-8")
-    (others_root / "index.md").write_text("# ambiguous\n", encoding="utf-8")
+    docs_root.mkdir()
+    (docs_root / "developers/codex").mkdir(parents=True)
+    (docs_root / "github/docs").mkdir(parents=True)
+    keep = docs_root / "developers/codex/cli.md"
+    stale = docs_root / "legacy/openclaw.md"
+    keep.write_text("# keep\n", encoding="utf-8")
+    stale.parent.mkdir(parents=True, exist_ok=True)
+    stale.write_text("# stale\n", encoding="utf-8")
 
     monkeypatch.setattr(sync_common, "DOCS_ROOT", docs_root)
-    monkeypatch.setattr(sync_common, "OTHERS_ROOT", others_root)
 
-    assert nested_others_rels_from_docs() == ["others/custom/index.md", "web/index.md"]
+    removed = prune_stale_docs(["developers/codex/cli.md"])
+
+    assert keep.exists()
+    assert stale in removed
+    assert not stale.exists()
 
 
-def test_rebuild_url_records_removes_stale_flat_files_and_keeps_indexes(tmp_path, monkeypatch) -> None:
+
+def test_rebuild_url_records_removes_stale_files_and_keeps_indexes(tmp_path, monkeypatch) -> None:
     docs_root = tmp_path / "docs"
-    others_root = docs_root / "others"
     urls_dir = tmp_path / "urls"
     docs_root.mkdir()
-    others_root.mkdir(parents=True)
     urls_dir.mkdir()
 
     monkeypatch.setattr(sync_common, "DOCS_ROOT", docs_root)
-    monkeypatch.setattr(sync_common, "OTHERS_ROOT", others_root)
     monkeypatch.setattr(sync_common, "URLS_DIR", urls_dir)
 
     (urls_dir / "all.txt").write_text("keep\n", encoding="utf-8")
-    (urls_dir / "tools.txt").write_text("stale\n", encoding="utf-8")
-    (urls_dir / "platforms").mkdir()
-    (urls_dir / "platforms" / "old.txt").write_text("stale\n", encoding="utf-8")
+    (urls_dir / "stale.txt").write_text("stale\n", encoding="utf-8")
+    (urls_dir / "github").mkdir()
+    (urls_dir / "github" / "old.txt").write_text("stale\n", encoding="utf-8")
 
-    rebuild_url_records(["index.md", "gateway/index.md", "automation/index.md", "web/index.md"])
+    rebuild_url_records(["developers/codex/cli.md", "github/docs/install.md", "github/README.md"])
 
     assert (urls_dir / "all.txt").exists()
-    assert not (urls_dir / "tools.txt").exists()
-    assert (urls_dir / "others/index.txt").read_text(encoding="utf-8") == "https://docs.openclaw.ai/index.md\n"
-    assert (urls_dir / "gateway/index.txt").read_text(encoding="utf-8") == "https://docs.openclaw.ai/gateway/index.md\n"
-    assert (urls_dir / "others/automation/index.txt").read_text(encoding="utf-8") == "https://docs.openclaw.ai/automation/index.md\n"
-    assert (urls_dir / "others/web/index.txt").read_text(encoding="utf-8") == "https://docs.openclaw.ai/web/index.md\n"
-    assert not (urls_dir / "platforms").exists()
+    assert not (urls_dir / "stale.txt").exists()
+    assert (urls_dir / "developers/codex/cli.txt").read_text(encoding="utf-8") == (
+        "https://developers.openai.com/codex/cli.md\n"
+    )
+    assert (urls_dir / "github/docs/install.txt").read_text(encoding="utf-8") == (
+        "https://raw.githubusercontent.com/openai/codex/main/docs/install.md\n"
+    )
+    assert (urls_dir / "github/README.txt").read_text(encoding="utf-8") == (
+        "https://raw.githubusercontent.com/openai/codex/main/README.md\n"
+    )
+    assert not (urls_dir / "github/old.txt").exists()
+
+
+
+def test_is_bad_doc_allows_short_github_redirect_stubs() -> None:
+    stub = "# Skills\n\nFor information about skills, refer to [this documentation](https://developers.openai.com/codex/skills).\n"
+    assert is_bad_doc("github/docs/skills.md", stub) is False
+    assert is_bad_doc("developers/codex/skills.md", stub) is True
+
 
 
 def test_sync_rels_supports_parallel_workers(tmp_path, monkeypatch) -> None:
     docs_root = tmp_path / "docs"
-    others_root = docs_root / "others"
     urls_dir = tmp_path / "urls"
     docs_root.mkdir()
-    others_root.mkdir(parents=True)
     urls_dir.mkdir()
 
     monkeypatch.setattr(sync_common, "DOCS_ROOT", docs_root)
-    monkeypatch.setattr(sync_common, "OTHERS_ROOT", others_root)
     monkeypatch.setattr(sync_common, "URLS_DIR", urls_dir)
 
     calls: list[tuple[str, int]] = []
@@ -97,7 +113,7 @@ def test_sync_rels_supports_parallel_workers(tmp_path, monkeypatch) -> None:
     monkeypatch.setattr(sync_common, "download_rel", fake_download_rel)
 
     downloaded, failures = sync_common.sync_rels(
-        ["index.md", "gateway/index.md"],
+        ["developers/codex/cli.md", "github/docs/install.md"],
         timeout=9,
         force_download=True,
         max_workers=2,
@@ -105,4 +121,4 @@ def test_sync_rels_supports_parallel_workers(tmp_path, monkeypatch) -> None:
 
     assert downloaded == 2
     assert failures == []
-    assert sorted(calls) == [("gateway/index.md", 9), ("index.md", 9)]
+    assert sorted(calls) == [("developers/codex/cli.md", 9), ("github/docs/install.md", 9)]

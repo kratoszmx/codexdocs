@@ -1,0 +1,1 @@
+https://developers.openai.com/codex/cli/slash-commands.md

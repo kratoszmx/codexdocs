@@ -4,21 +4,22 @@ from __future__ import annotations
 import argparse
 import time
 
-from sync_common import DEFAULT_MAX_WORKERS, all_doc_urls, check_rels, rebuild_url_records, rels_from_urls, sync_rels, write_url_list
+from sync_common import DEFAULT_MAX_WORKERS, all_doc_urls, check_rels, prune_stale_docs, rebuild_url_records, rels_from_urls, sync_rels, write_url_list
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Check/repair full docs.openclaw.ai markdown mirror. "
-            "check-only validates local completeness against the current llms.txt index; "
+            "Check/repair the local Codex CLI docs mirror. "
+            "This sync pulls from official Codex developer docs plus the openai/codex repo markdown docs. "
+            "check-only validates local completeness against the current discovered source indexes; "
             "update-all refreshes all currently indexed docs."
         )
     )
     parser.add_argument(
         "--check-only",
         action="store_true",
-        help="Only check missing/bad docs against the current llms.txt index; does not verify upstream freshness",
+        help="Only check missing/bad docs against the current discovered indexes; does not verify upstream freshness",
     )
     parser.add_argument(
         "--update-all",
@@ -45,6 +46,7 @@ def main() -> None:
     rels = rels_from_urls(urls)
     write_url_list("all.txt", urls)
     rebuild_url_records(rels)
+    prune_stale_docs(rels)
     after_metadata = time.perf_counter()
 
     print(f"expected_docs={len(rels)}")
@@ -88,7 +90,7 @@ def main() -> None:
     if failures:
         print("FAILURES:")
         for rel, msg in failures:
-            print(f"{rel}	{msg}")
+            print(f"{rel}\t{msg}")
 
     if args.benchmark:
         download_seconds = after_download - after_metadata

@@ -7,8 +7,12 @@ from sync_common import DEFAULT_MAX_WORKERS, all_doc_urls, filter_rels_by_prefix
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Sync one docs.openclaw.ai section")
-    parser.add_argument("section", help="Top-level section name, e.g. tools")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Sync one Codex docs subtree. Prefix examples: developers/codex/cli, developers/codex/security, github/docs"
+        )
+    )
+    parser.add_argument("section", help="Prefix to sync, e.g. developers/codex/cli or github/docs")
     parser.add_argument("--timeout", type=int, default=45, help="HTTP timeout seconds (default: 45)")
     parser.add_argument(
         "--workers",
@@ -27,7 +31,7 @@ def main() -> None:
     if failures:
         print("FAILURES:")
         for rel, msg in failures:
-            print(f"{rel}	{msg}")
+            print(f"{rel}\t{msg}")
 
 
 if __name__ == "__main__":

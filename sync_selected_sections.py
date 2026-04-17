@@ -3,13 +3,23 @@ from __future__ import annotations
 
 import argparse
 
-from sync_common import DEFAULT_MAX_WORKERS, all_doc_urls, filter_rels_by_prefixes, rels_from_urls, sync_rels, urls_from_rels, write_url_list, write_url_records
+from sync_common import (
+    DEFAULT_MAX_WORKERS,
+    SELECTED_SECTION_PREFIXES,
+    all_doc_urls,
+    filter_rels_by_prefixes,
+    rels_from_urls,
+    sync_rels,
+    urls_from_rels,
+    write_url_list,
+    write_url_records,
+)
 
-SECTIONS = ["install", "channels", "tools", "plugins", "platforms", "gateway", "reference", "help"]
+SECTIONS = SELECTED_SECTION_PREFIXES
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Sync selected docs.openclaw.ai sections")
+    parser = argparse.ArgumentParser(description="Sync the main Codex CLI doc source groups")
     parser.add_argument("--timeout", type=int, default=45, help="HTTP timeout seconds (default: 45)")
     parser.add_argument(
         "--workers",
@@ -27,12 +37,12 @@ def main() -> None:
     print(f"SYNCED {len(rels)} files")
     print(f"downloaded: {downloaded}")
     for section in SECTIONS:
-        count = sum(1 for rel in rels if rel.startswith(section + "/"))
+        count = sum(1 for rel in rels if rel == section or rel.startswith(section + "/"))
         print(f"{section}: {count}")
     if failures:
         print("FAILURES:")
         for rel, msg in failures:
-            print(f"{rel}	{msg}")
+            print(f"{rel}\t{msg}")
 
 
 if __name__ == "__main__":

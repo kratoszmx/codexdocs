@@ -5,9 +5,9 @@ import sync_section
 
 def test_sync_section_writes_mirrored_url_records(monkeypatch, capsys) -> None:
     monkeypatch.setattr(sync_section, "all_doc_urls", lambda timeout: [
-        "https://docs.openclaw.ai/tools/browser.md",
-        "https://docs.openclaw.ai/tools/read.md",
-        "https://docs.openclaw.ai/gateway/index.md",
+        "https://developers.openai.com/codex/cli.md",
+        "https://developers.openai.com/codex/cli/reference.md",
+        "https://raw.githubusercontent.com/openai/codex/main/docs/install.md",
     ])
 
     written: list[list[str]] = []
@@ -22,11 +22,11 @@ def test_sync_section_writes_mirrored_url_records(monkeypatch, capsys) -> None:
         ),
     )
 
-    monkeypatch.setattr(sys, "argv", ["sync_section.py", "tools", "--timeout", "11", "--workers", "4"])
+    monkeypatch.setattr(sys, "argv", ["sync_section.py", "developers/codex/cli", "--timeout", "11", "--workers", "4"])
     sync_section.main()
 
     out = capsys.readouterr().out
-    assert written == [["tools/browser.md", "tools/read.md"]]
-    assert sync_calls == [(["tools/browser.md", "tools/read.md"], 11, True, 4)]
-    assert "tools: 2" in out
+    assert written == [["developers/codex/cli.md", "developers/codex/cli/reference.md"]]
+    assert sync_calls == [(["developers/codex/cli.md", "developers/codex/cli/reference.md"], 11, True, 4)]
+    assert "developers/codex/cli: 2" in out
     assert "downloaded: 2" in out

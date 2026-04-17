@@ -5,13 +5,15 @@ import sync_all_docs
 
 def test_sync_all_docs_check_only(monkeypatch, capsys) -> None:
     monkeypatch.setattr(sync_all_docs, "all_doc_urls", lambda timeout: [
-        "https://docs.openclaw.ai/index.md",
-        "https://docs.openclaw.ai/gateway/index.md",
+        "https://developers.openai.com/codex/cli.md",
+        "https://raw.githubusercontent.com/openai/codex/main/docs/install.md",
     ])
     monkeypatch.setattr(sync_all_docs, "write_url_list", lambda name, urls: None)
     rebuilt: list[list[str]] = []
+    pruned: list[list[str]] = []
     monkeypatch.setattr(sync_all_docs, "rebuild_url_records", lambda rels: rebuilt.append(list(rels)))
-    monkeypatch.setattr(sync_all_docs, "check_rels", lambda rels: (["index.md"], ["gateway/index.md"]))
+    monkeypatch.setattr(sync_all_docs, "prune_stale_docs", lambda rels: pruned.append(list(rels)))
+    monkeypatch.setattr(sync_all_docs, "check_rels", lambda rels: (["developers/codex/cli.md"], ["github/docs/install.md"]))
     monkeypatch.setattr(sync_all_docs, "sync_rels", lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("sync_rels should not run")))
 
     monkeypatch.setattr(sys, "argv", ["sync_all_docs.py", "--check-only"])
@@ -21,16 +23,19 @@ def test_sync_all_docs_check_only(monkeypatch, capsys) -> None:
     assert "expected_docs=2" in out
     assert "missing=1" in out
     assert "bad=1" in out
-    assert rebuilt == [["index.md", "gateway/index.md"]]
+    assert rebuilt == [["developers/codex/cli.md", "github/docs/install.md"]]
+    assert pruned == [["developers/codex/cli.md", "github/docs/install.md"]]
+
 
 
 def test_sync_all_docs_update_all(monkeypatch, capsys) -> None:
     monkeypatch.setattr(sync_all_docs, "all_doc_urls", lambda timeout: [
-        "https://docs.openclaw.ai/index.md",
-        "https://docs.openclaw.ai/gateway/index.md",
+        "https://developers.openai.com/codex/cli.md",
+        "https://raw.githubusercontent.com/openai/codex/main/docs/install.md",
     ])
     monkeypatch.setattr(sync_all_docs, "write_url_list", lambda name, urls: None)
     monkeypatch.setattr(sync_all_docs, "rebuild_url_records", lambda rels: None)
+    monkeypatch.setattr(sync_all_docs, "prune_stale_docs", lambda rels: None)
     sync_calls: list[tuple[list[str], int, bool, int]] = []
     monkeypatch.setattr(
         sync_all_docs,
@@ -47,17 +52,18 @@ def test_sync_all_docs_update_all(monkeypatch, capsys) -> None:
     out = capsys.readouterr().out
     assert "downloaded=2" in out
     assert "postcheck_bad=0" in out
-    assert sync_calls == [(["index.md", "gateway/index.md"], 9, True, 7)]
+    assert sync_calls == [(["developers/codex/cli.md", "github/docs/install.md"], 9, True, 7)]
 
 
 
 def test_sync_all_docs_benchmark_outputs_timings(monkeypatch, capsys) -> None:
     monkeypatch.setattr(sync_all_docs, "all_doc_urls", lambda timeout: [
-        "https://docs.openclaw.ai/index.md",
-        "https://docs.openclaw.ai/gateway/index.md",
+        "https://developers.openai.com/codex/cli.md",
+        "https://raw.githubusercontent.com/openai/codex/main/docs/install.md",
     ])
     monkeypatch.setattr(sync_all_docs, "write_url_list", lambda name, urls: None)
     monkeypatch.setattr(sync_all_docs, "rebuild_url_records", lambda rels: None)
+    monkeypatch.setattr(sync_all_docs, "prune_stale_docs", lambda rels: None)
     monkeypatch.setattr(sync_all_docs, "sync_rels", lambda rels, timeout, force_download, max_workers: (2, []))
     monkeypatch.setattr(sync_all_docs, "check_rels", lambda rels: ([], []))
 
