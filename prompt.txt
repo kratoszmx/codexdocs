@@ -1,6 +1,6 @@
 好，我們繼續，我們回到~/project/codex_docs下的文件。
 1. 妳根據妳的需要覺得是否再讀一下所有skills。如果妳讀了skills，妳就也應該讀一下skills建議妳讀的其他文件。
-2. 妳检查一下我目前codex cli的插件,看看妳还建议安装哪些插件.我的场景主要是python编程,平台是macos和zsh.不要太多,我希望我的codexcli装上必要且精华的插件
+2. 妳检查一下我目前codex cli的插件和mcp，看看妳还建议安装哪些插件和mcp。我的场景主要是python编程，平台是macos和zsh。不要太多,我希望我的codexcli装上必要且精华的插件和mcp
 
 好，我們繼續，我們回到~/project/codex_docs下的文件。
 1. 妳根據妳的需要决定是否再讀一下所有skills。如果妳讀了skills，妳就也應該讀一下skills建議妳讀的其他文件。
